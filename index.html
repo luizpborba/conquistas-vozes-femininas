@@ -386,14 +386,53 @@ footer small{display:block;opacity:.6;font-size:.78rem;margin-top:.4rem}
 #aviso.on{transform:translate(-50%,0)}
 
 /* ------------------------------------------------------------ lightbox */
-dialog{border:0;background:transparent;padding:0;max-width:96vw;max-height:96vh}
-dialog::backdrop{background:rgba(8,4,18,.9);backdrop-filter:blur(6px)}
-.lb{position:relative;background:var(--card);border-radius:20px;overflow:hidden;max-width:960px}
-.lb img{max-height:76vh;width:100%;object-fit:contain;background:#0a0416}
-.lb-txt{padding:1rem 1.3rem;font-size:.9rem}
-.lb-txt small{display:block;color:var(--suave);font-size:.74rem;margin-top:.25rem}
-.lb-x{position:absolute;top:.6rem;right:.6rem;background:rgba(255,255,255,.94);border:0;width:36px;
-  height:36px;border-radius:10px;cursor:pointer;display:grid;place-items:center;color:#3b0764}
+dialog{border:0;background:transparent;padding:0;max-width:96vw;max-height:94vh}
+dialog::backdrop{background:rgba(8,4,18,.92);backdrop-filter:blur(7px);opacity:0}
+dialog[open]::backdrop{animation:veuEntra .35s ease forwards}
+@keyframes veuEntra{to{opacity:1}}
+dialog[open] .lb{animation:visorEntra .45s cubic-bezier(.2,.9,.3,1) both}
+@keyframes visorEntra{from{opacity:0;transform:scale(.92) translateY(22px)}to{opacity:1;transform:none}}
+.lb{position:relative;background:var(--card);border-radius:22px;overflow:hidden;width:min(1040px,94vw);
+  max-height:94vh;display:flex;flex-direction:column;box-shadow:var(--sombra-forte)}
+.lb-corpo{display:grid;grid-template-columns:1.25fr 1fr;overflow:hidden;min-height:0}
+.lb-foto{position:relative;background:#0a0416;display:grid;place-items:center;min-height:0}
+.lb-foto img{width:100%;height:100%;max-height:78vh;object-fit:contain;display:block}
+.lb-corpo.troca-dir .lb-foto img,.lb-corpo.troca-dir .lb-txt{animation:vemDaDir .42s cubic-bezier(.2,.9,.3,1) both}
+.lb-corpo.troca-esq .lb-foto img,.lb-corpo.troca-esq .lb-txt{animation:vemDaEsq .42s cubic-bezier(.2,.9,.3,1) both}
+@keyframes vemDaDir{from{opacity:0;transform:translateX(42px) scale(.97)}to{opacity:1;transform:none}}
+@keyframes vemDaEsq{from{opacity:0;transform:translateX(-42px) scale(.97)}to{opacity:1;transform:none}}
+.lb-nav{position:absolute;top:50%;transform:translateY(-50%);z-index:3;width:44px;height:44px;
+  border:0;border-radius:50%;background:rgba(255,255,255,.92);color:#3b0764;cursor:pointer;
+  display:grid;place-items:center;transition:.22s;box-shadow:0 6px 18px rgba(0,0,0,.35)}
+.lb-nav:hover{background:#fff;transform:translateY(-50%) scale(1.08)}
+.lb-nav .ic{width:20px;height:20px}
+.lb-ant{left:.7rem}
+.lb-prox{right:.7rem}
+.lb-contador{position:absolute;left:50%;bottom:.7rem;transform:translateX(-50%);z-index:3;
+  background:rgba(10,4,22,.72);color:#fff;font-size:.74rem;font-weight:700;padding:.25rem .7rem;
+  border-radius:99px;letter-spacing:.04em;font-variant-numeric:tabular-nums}
+.lb-txt{padding:1.6rem 1.5rem;overflow-y:auto;min-height:0}
+.lb-ano{display:inline-block;font-family:'Fraunces',serif;font-size:1.5rem;color:var(--roxo);line-height:1}
+.lb-txt h3{font-size:1.2rem;margin:.3rem 0 .6rem;letter-spacing:-.01em}
+.lb-leg{color:var(--suave);font-size:.88rem;font-style:italic}
+.lb-impacto{margin-top:1.1rem;padding-top:1.1rem;border-top:1px solid var(--borda)}
+.lb-impacto h4{font-size:.72rem;font-weight:800;letter-spacing:.16em;text-transform:uppercase;
+  color:var(--roxo-claro);margin-bottom:.5rem;font-family:'Plus Jakarta Sans',sans-serif}
+.lb-impacto p{font-size:.93rem;line-height:1.6}
+.lb-txt small{display:block;color:var(--suave);font-size:.72rem;margin-top:1.1rem}
+.lb-dica{padding:.6rem 1.2rem;font-size:.74rem;color:var(--suave);border-top:1px solid var(--borda);
+  text-align:center}
+.lb-x{position:absolute;top:.6rem;right:.6rem;z-index:4;background:rgba(255,255,255,.94);border:0;
+  width:36px;height:36px;border-radius:10px;cursor:pointer;display:grid;place-items:center;color:#3b0764}
+.sem-sequencia .lb-nav,.sem-sequencia .lb-contador,.sem-sequencia .lb-dica,
+.sem-sequencia .lb-impacto,.sem-sequencia .lb-ano{display:none}
+@media (max-width:820px){
+  .lb{width:96vw}
+  .lb-corpo{grid-template-columns:1fr;grid-template-rows:auto 1fr;overflow-y:auto}
+  .lb-foto img{max-height:40vh}
+  .lb-txt{padding:1.2rem 1.1rem}
+  .lb-nav{width:40px;height:40px}
+}
 
 @media (prefers-reduced-motion:reduce){
   *{animation-duration:.01ms !important;animation-iteration-count:1 !important;
@@ -549,8 +588,8 @@ dialog::backdrop{background:rgba(8,4,18,.9);backdrop-filter:blur(6px)}
               <img loading="lazy" src="https://upload.wikimedia.org/wikipedia/commons/0/0e/Sewing_lesson_in_a_girl_class_in_Hellemmes_around_1900.jpg" alt="Aula em uma classe de meninas, registro de cerca de 1900">
               <span class="tag educacao">Educação</span>
               <span class="year">1827</span>
-              <button class="zoom" data-foto="https://upload.wikimedia.org/wikipedia/commons/0/0e/Sewing_lesson_in_a_girl_class_in_Hellemmes_around_1900.jpg" data-leg="Aula em uma classe de meninas, registro de cerca de 1900"
-                      aria-label="Ampliar a foto de 1827"><svg class="ic" aria-hidden="true"><use href="#i-lupa-mais"></use></svg></button>
+              <button class="zoom" data-idx="0"
+                      aria-label="Ver a foto de 1827 e o que ela representa"><svg class="ic" aria-hidden="true"><use href="#i-lupa-mais"></use></svg></button>
             </div>
             <div class="card-body">
               <h3>Direito à instrução primária</h3>
@@ -571,8 +610,8 @@ dialog::backdrop{background:rgba(8,4,18,.9);backdrop-filter:blur(6px)}
               <img loading="lazy" src="https://upload.wikimedia.org/wikipedia/commons/4/43/Woman%27s_Rights_Convention.jpg" alt="Registro da primeira convenção pelos direitos das mulheres, Estados Unidos">
               <span class="tag movimento">Movimento e Política</span>
               <span class="year">1848</span>
-              <button class="zoom" data-foto="https://upload.wikimedia.org/wikipedia/commons/4/43/Woman%27s_Rights_Convention.jpg" data-leg="Registro da primeira convenção pelos direitos das mulheres, Estados Unidos"
-                      aria-label="Ampliar a foto de 1848"><svg class="ic" aria-hidden="true"><use href="#i-lupa-mais"></use></svg></button>
+              <button class="zoom" data-idx="1"
+                      aria-label="Ver a foto de 1848 e o que ela representa"><svg class="ic" aria-hidden="true"><use href="#i-lupa-mais"></use></svg></button>
             </div>
             <div class="card-body">
               <h3>Convenção de Seneca Falls</h3>
@@ -593,8 +632,8 @@ dialog::backdrop{background:rgba(8,4,18,.9);backdrop-filter:blur(6px)}
               <img loading="lazy" src="https://thumb.wikimedia.org/wikipedia/commons/thumb/5/51/Group_of_mainly_female_shirtwaist_workers_on_strike%2C_in_a_room%2C_New_York.png/960px-Group_of_mainly_female_shirtwaist_workers_on_strike%2C_in_a_room%2C_New_York.png" alt="Operárias em greve nas fábricas de camisas de Nova York">
               <span class="tag trabalho">Trabalho</span>
               <span class="year">1857</span>
-              <button class="zoom" data-foto="https://thumb.wikimedia.org/wikipedia/commons/thumb/5/51/Group_of_mainly_female_shirtwaist_workers_on_strike%2C_in_a_room%2C_New_York.png/960px-Group_of_mainly_female_shirtwaist_workers_on_strike%2C_in_a_room%2C_New_York.png" data-leg="Operárias em greve nas fábricas de camisas de Nova York"
-                      aria-label="Ampliar a foto de 1857"><svg class="ic" aria-hidden="true"><use href="#i-lupa-mais"></use></svg></button>
+              <button class="zoom" data-idx="2"
+                      aria-label="Ver a foto de 1857 e o que ela representa"><svg class="ic" aria-hidden="true"><use href="#i-lupa-mais"></use></svg></button>
             </div>
             <div class="card-body">
               <h3>Greve das operárias têxteis</h3>
@@ -615,8 +654,8 @@ dialog::backdrop{background:rgba(8,4,18,.9);backdrop-filter:blur(6px)}
               <img loading="lazy" src="https://upload.wikimedia.org/wikipedia/commons/e/ec/Ritalobato.jpg" alt="Rita Lobato Velho Lopes, primeira mulher a se formar em medicina no Brasil">
               <span class="tag educacao">Educação</span>
               <span class="year">1887</span>
-              <button class="zoom" data-foto="https://upload.wikimedia.org/wikipedia/commons/e/ec/Ritalobato.jpg" data-leg="Rita Lobato Velho Lopes, primeira mulher a se formar em medicina no Brasil"
-                      aria-label="Ampliar a foto de 1887"><svg class="ic" aria-hidden="true"><use href="#i-lupa-mais"></use></svg></button>
+              <button class="zoom" data-idx="3"
+                      aria-label="Ver a foto de 1887 e o que ela representa"><svg class="ic" aria-hidden="true"><use href="#i-lupa-mais"></use></svg></button>
             </div>
             <div class="card-body">
               <h3>A primeira médica do Brasil</h3>
@@ -637,8 +676,8 @@ dialog::backdrop{background:rgba(8,4,18,.9);backdrop-filter:blur(6px)}
               <img loading="lazy" src="https://thumb.wikimedia.org/wikipedia/commons/thumb/6/6f/1893_New_Zealand_suffrage_petition.jpg/960px-1893_New_Zealand_suffrage_petition.jpg" alt="Petição pelo sufrágio feminino na Nova Zelândia, 1893">
               <span class="tag movimento">Movimento e Política</span>
               <span class="year">1893</span>
-              <button class="zoom" data-foto="https://thumb.wikimedia.org/wikipedia/commons/thumb/6/6f/1893_New_Zealand_suffrage_petition.jpg/960px-1893_New_Zealand_suffrage_petition.jpg" data-leg="Petição pelo sufrágio feminino na Nova Zelândia, 1893"
-                      aria-label="Ampliar a foto de 1893"><svg class="ic" aria-hidden="true"><use href="#i-lupa-mais"></use></svg></button>
+              <button class="zoom" data-idx="4"
+                      aria-label="Ver a foto de 1893 e o que ela representa"><svg class="ic" aria-hidden="true"><use href="#i-lupa-mais"></use></svg></button>
             </div>
             <div class="card-body">
               <h3>Primeiro país com voto feminino</h3>
@@ -659,8 +698,8 @@ dialog::backdrop{background:rgba(8,4,18,.9);backdrop-filter:blur(6px)}
               <img loading="lazy" src="https://upload.wikimedia.org/wikipedia/commons/8/89/Clara_Zetkin_1930.jpg" alt="Clara Zetkin, idealizadora do Dia Internacional da Mulher">
               <span class="tag movimento">Movimento e Política</span>
               <span class="year">1910</span>
-              <button class="zoom" data-foto="https://upload.wikimedia.org/wikipedia/commons/8/89/Clara_Zetkin_1930.jpg" data-leg="Clara Zetkin, idealizadora do Dia Internacional da Mulher"
-                      aria-label="Ampliar a foto de 1910"><svg class="ic" aria-hidden="true"><use href="#i-lupa-mais"></use></svg></button>
+              <button class="zoom" data-idx="5"
+                      aria-label="Ver a foto de 1910 e o que ela representa"><svg class="ic" aria-hidden="true"><use href="#i-lupa-mais"></use></svg></button>
             </div>
             <div class="card-body">
               <h3>Nasce o 8 de Março</h3>
@@ -681,8 +720,8 @@ dialog::backdrop{background:rgba(8,4,18,.9);backdrop-filter:blur(6px)}
               <img loading="lazy" src="https://thumb.wikimedia.org/wikipedia/commons/thumb/1/15/Suffrage_worker_with_newspaper_clippings_on_the_passage_of_the_Nineteenth_Amendment_granting_women_the_right_to_vote_by_the_United_States_Senate.jpg/960px-Suffrage_worker_with_newspaper_clippings_on_the_passage_of_the_Nineteenth_Amendment_granting_women_the_right_to_vote_by_the_United_States_Senate.jpg" alt="Ativista sufragista com recortes de jornal sobre a conquista do voto">
               <span class="tag movimento">Movimento e Política</span>
               <span class="year">1918</span>
-              <button class="zoom" data-foto="https://thumb.wikimedia.org/wikipedia/commons/thumb/1/15/Suffrage_worker_with_newspaper_clippings_on_the_passage_of_the_Nineteenth_Amendment_granting_women_the_right_to_vote_by_the_United_States_Senate.jpg/960px-Suffrage_worker_with_newspaper_clippings_on_the_passage_of_the_Nineteenth_Amendment_granting_women_the_right_to_vote_by_the_United_States_Senate.jpg" data-leg="Ativista sufragista com recortes de jornal sobre a conquista do voto"
-                      aria-label="Ampliar a foto de 1918"><svg class="ic" aria-hidden="true"><use href="#i-lupa-mais"></use></svg></button>
+              <button class="zoom" data-idx="6"
+                      aria-label="Ver a foto de 1918 e o que ela representa"><svg class="ic" aria-hidden="true"><use href="#i-lupa-mais"></use></svg></button>
             </div>
             <div class="card-body">
               <h3>Voto feminino no Reino Unido</h3>
@@ -703,8 +742,8 @@ dialog::backdrop{background:rgba(8,4,18,.9);backdrop-filter:blur(6px)}
               <img loading="lazy" src="https://thumb.wikimedia.org/wikipedia/commons/thumb/1/15/Suffrage_worker_with_newspaper_clippings_on_the_passage_of_the_Nineteenth_Amendment_granting_women_the_right_to_vote_by_the_United_States_Senate.jpg/960px-Suffrage_worker_with_newspaper_clippings_on_the_passage_of_the_Nineteenth_Amendment_granting_women_the_right_to_vote_by_the_United_States_Senate.jpg" alt="Sufragista celebra a aprovação da 19ª Emenda no Senado dos Estados Unidos">
               <span class="tag movimento">Movimento e Política</span>
               <span class="year">1920</span>
-              <button class="zoom" data-foto="https://thumb.wikimedia.org/wikipedia/commons/thumb/1/15/Suffrage_worker_with_newspaper_clippings_on_the_passage_of_the_Nineteenth_Amendment_granting_women_the_right_to_vote_by_the_United_States_Senate.jpg/960px-Suffrage_worker_with_newspaper_clippings_on_the_passage_of_the_Nineteenth_Amendment_granting_women_the_right_to_vote_by_the_United_States_Senate.jpg" data-leg="Sufragista celebra a aprovação da 19ª Emenda no Senado dos Estados Unidos"
-                      aria-label="Ampliar a foto de 1920"><svg class="ic" aria-hidden="true"><use href="#i-lupa-mais"></use></svg></button>
+              <button class="zoom" data-idx="7"
+                      aria-label="Ver a foto de 1920 e o que ela representa"><svg class="ic" aria-hidden="true"><use href="#i-lupa-mais"></use></svg></button>
             </div>
             <div class="card-body">
               <h3>A 19ª Emenda nos Estados Unidos</h3>
@@ -725,8 +764,8 @@ dialog::backdrop{background:rgba(8,4,18,.9);backdrop-filter:blur(6px)}
               <img loading="lazy" src="https://upload.wikimedia.org/wikipedia/commons/6/66/Celina_Guimar%C3%A3es_Viana.jpg" alt="Celina Guimarães Viana, primeira eleitora registrada do Brasil">
               <span class="tag movimento">Movimento e Política</span>
               <span class="year">1928</span>
-              <button class="zoom" data-foto="https://upload.wikimedia.org/wikipedia/commons/6/66/Celina_Guimar%C3%A3es_Viana.jpg" data-leg="Celina Guimarães Viana, primeira eleitora registrada do Brasil"
-                      aria-label="Ampliar a foto de 1928"><svg class="ic" aria-hidden="true"><use href="#i-lupa-mais"></use></svg></button>
+              <button class="zoom" data-idx="8"
+                      aria-label="Ver a foto de 1928 e o que ela representa"><svg class="ic" aria-hidden="true"><use href="#i-lupa-mais"></use></svg></button>
             </div>
             <div class="card-body">
               <h3>A primeira eleitora e a primeira prefeita</h3>
@@ -747,8 +786,8 @@ dialog::backdrop{background:rgba(8,4,18,.9);backdrop-filter:blur(6px)}
               <img loading="lazy" src="https://thumb.wikimedia.org/wikipedia/commons/thumb/2/28/Bertha_Lutz_1925.jpg/960px-Bertha_Lutz_1925.jpg" alt="Bertha Lutz, líder do movimento sufragista brasileiro">
               <span class="tag movimento">Movimento e Política</span>
               <span class="year">1932</span>
-              <button class="zoom" data-foto="https://thumb.wikimedia.org/wikipedia/commons/thumb/2/28/Bertha_Lutz_1925.jpg/960px-Bertha_Lutz_1925.jpg" data-leg="Bertha Lutz, líder do movimento sufragista brasileiro"
-                      aria-label="Ampliar a foto de 1932"><svg class="ic" aria-hidden="true"><use href="#i-lupa-mais"></use></svg></button>
+              <button class="zoom" data-idx="9"
+                      aria-label="Ver a foto de 1932 e o que ela representa"><svg class="ic" aria-hidden="true"><use href="#i-lupa-mais"></use></svg></button>
             </div>
             <div class="card-body">
               <h3>Voto feminino no Brasil</h3>
@@ -769,8 +808,8 @@ dialog::backdrop{background:rgba(8,4,18,.9);backdrop-filter:blur(6px)}
               <img loading="lazy" src="https://upload.wikimedia.org/wikipedia/commons/9/95/Carlota_Pereira_de_Queiroz_1920%27s.jpg" alt="Carlota Pereira de Queirós, primeira deputada federal do Brasil">
               <span class="tag movimento">Movimento e Política</span>
               <span class="year">1934</span>
-              <button class="zoom" data-foto="https://upload.wikimedia.org/wikipedia/commons/9/95/Carlota_Pereira_de_Queiroz_1920%27s.jpg" data-leg="Carlota Pereira de Queirós, primeira deputada federal do Brasil"
-                      aria-label="Ampliar a foto de 1934"><svg class="ic" aria-hidden="true"><use href="#i-lupa-mais"></use></svg></button>
+              <button class="zoom" data-idx="10"
+                      aria-label="Ver a foto de 1934 e o que ela representa"><svg class="ic" aria-hidden="true"><use href="#i-lupa-mais"></use></svg></button>
             </div>
             <div class="card-body">
               <h3>A primeira deputada federal</h3>
@@ -791,8 +830,8 @@ dialog::backdrop{background:rgba(8,4,18,.9);backdrop-filter:blur(6px)}
               <img loading="lazy" src="https://thumb.wikimedia.org/wikipedia/commons/thumb/1/12/Weavers_at_work_LOC_2163450764.jpg/960px-Weavers_at_work_LOC_2163450764.jpg" alt="Tecelãs em jornada de trabalho na indústria têxtil">
               <span class="tag trabalho">Trabalho</span>
               <span class="year">1943</span>
-              <button class="zoom" data-foto="https://thumb.wikimedia.org/wikipedia/commons/thumb/1/12/Weavers_at_work_LOC_2163450764.jpg/960px-Weavers_at_work_LOC_2163450764.jpg" data-leg="Tecelãs em jornada de trabalho na indústria têxtil"
-                      aria-label="Ampliar a foto de 1943"><svg class="ic" aria-hidden="true"><use href="#i-lupa-mais"></use></svg></button>
+              <button class="zoom" data-idx="11"
+                      aria-label="Ver a foto de 1943 e o que ela representa"><svg class="ic" aria-hidden="true"><use href="#i-lupa-mais"></use></svg></button>
             </div>
             <div class="card-body">
               <h3>A CLT e o trabalho feminino</h3>
@@ -813,8 +852,8 @@ dialog::backdrop{background:rgba(8,4,18,.9);backdrop-filter:blur(6px)}
               <img loading="lazy" src="https://thumb.wikimedia.org/wikipedia/commons/thumb/3/32/Bertha_Lutz_07.jpg/960px-Bertha_Lutz_07.jpg" alt="Bertha Lutz, delegada do Brasil na conferência de fundação da ONU">
               <span class="tag legislacao">Proteção Legal</span>
               <span class="year">1945</span>
-              <button class="zoom" data-foto="https://thumb.wikimedia.org/wikipedia/commons/thumb/3/32/Bertha_Lutz_07.jpg/960px-Bertha_Lutz_07.jpg" data-leg="Bertha Lutz, delegada do Brasil na conferência de fundação da ONU"
-                      aria-label="Ampliar a foto de 1945"><svg class="ic" aria-hidden="true"><use href="#i-lupa-mais"></use></svg></button>
+              <button class="zoom" data-idx="12"
+                      aria-label="Ver a foto de 1945 e o que ela representa"><svg class="ic" aria-hidden="true"><use href="#i-lupa-mais"></use></svg></button>
             </div>
             <div class="card-body">
               <h3>A Carta da ONU e a assinatura brasileira</h3>
@@ -835,8 +874,8 @@ dialog::backdrop{background:rgba(8,4,18,.9);backdrop-filter:blur(6px)}
               <img loading="lazy" src="https://upload.wikimedia.org/wikipedia/commons/c/c9/Simone_de_Beauvoir_1967_%28cropped%29.jpg" alt="Simone de Beauvoir, autora de O Segundo Sexo">
               <span class="tag movimento">Movimento e Política</span>
               <span class="year">1949</span>
-              <button class="zoom" data-foto="https://upload.wikimedia.org/wikipedia/commons/c/c9/Simone_de_Beauvoir_1967_%28cropped%29.jpg" data-leg="Simone de Beauvoir, autora de O Segundo Sexo"
-                      aria-label="Ampliar a foto de 1949"><svg class="ic" aria-hidden="true"><use href="#i-lupa-mais"></use></svg></button>
+              <button class="zoom" data-idx="13"
+                      aria-label="Ver a foto de 1949 e o que ela representa"><svg class="ic" aria-hidden="true"><use href="#i-lupa-mais"></use></svg></button>
             </div>
             <div class="card-body">
               <h3>O Segundo Sexo</h3>
@@ -857,8 +896,8 @@ dialog::backdrop{background:rgba(8,4,18,.9);backdrop-filter:blur(6px)}
               <img loading="lazy" src="https://thumb.wikimedia.org/wikipedia/commons/thumb/1/12/International_Labor_Conference_1929_Japan.jpg/960px-International_Labor_Conference_1929_Japan.jpg" alt="Conferência Internacional do Trabalho, registro histórico da OIT">
               <span class="tag trabalho">Trabalho</span>
               <span class="year">1951</span>
-              <button class="zoom" data-foto="https://thumb.wikimedia.org/wikipedia/commons/thumb/1/12/International_Labor_Conference_1929_Japan.jpg/960px-International_Labor_Conference_1929_Japan.jpg" data-leg="Conferência Internacional do Trabalho, registro histórico da OIT"
-                      aria-label="Ampliar a foto de 1951"><svg class="ic" aria-hidden="true"><use href="#i-lupa-mais"></use></svg></button>
+              <button class="zoom" data-idx="14"
+                      aria-label="Ver a foto de 1951 e o que ela representa"><svg class="ic" aria-hidden="true"><use href="#i-lupa-mais"></use></svg></button>
             </div>
             <div class="card-body">
               <h3>Salário igual para trabalho de igual valor</h3>
@@ -879,8 +918,8 @@ dialog::backdrop{background:rgba(8,4,18,.9);backdrop-filter:blur(6px)}
               <img loading="lazy" src="https://thumb.wikimedia.org/wikipedia/commons/thumb/b/be/A_Young_Woman_%28Heiress%29_Prepares_to_Sign_a_Document_Met_DP885282.jpg/960px-A_Young_Woman_%28Heiress%29_Prepares_to_Sign_a_Document_Met_DP885282.jpg" alt="Mulher assina um documento, imagem de acervo histórico">
               <span class="tag legislacao">Proteção Legal</span>
               <span class="year">1962</span>
-              <button class="zoom" data-foto="https://thumb.wikimedia.org/wikipedia/commons/thumb/b/be/A_Young_Woman_%28Heiress%29_Prepares_to_Sign_a_Document_Met_DP885282.jpg/960px-A_Young_Woman_%28Heiress%29_Prepares_to_Sign_a_Document_Met_DP885282.jpg" data-leg="Mulher assina um documento, imagem de acervo histórico"
-                      aria-label="Ampliar a foto de 1962"><svg class="ic" aria-hidden="true"><use href="#i-lupa-mais"></use></svg></button>
+              <button class="zoom" data-idx="15"
+                      aria-label="Ver a foto de 1962 e o que ela representa"><svg class="ic" aria-hidden="true"><use href="#i-lupa-mais"></use></svg></button>
             </div>
             <div class="card-body">
               <h3>Estatuto da Mulher Casada</h3>
@@ -901,8 +940,8 @@ dialog::backdrop{background:rgba(8,4,18,.9);backdrop-filter:blur(6px)}
               <img loading="lazy" src="https://upload.wikimedia.org/wikipedia/commons/7/73/Stamp_of_Brazil_-_1975_-_Colnect_152238_-_International_Women_s_Year.jpeg" alt="Selo brasileiro comemorativo do Ano Internacional da Mulher, 1975">
               <span class="tag movimento">Movimento e Política</span>
               <span class="year">1975</span>
-              <button class="zoom" data-foto="https://upload.wikimedia.org/wikipedia/commons/7/73/Stamp_of_Brazil_-_1975_-_Colnect_152238_-_International_Women_s_Year.jpeg" data-leg="Selo brasileiro comemorativo do Ano Internacional da Mulher, 1975"
-                      aria-label="Ampliar a foto de 1975"><svg class="ic" aria-hidden="true"><use href="#i-lupa-mais"></use></svg></button>
+              <button class="zoom" data-idx="16"
+                      aria-label="Ver a foto de 1975 e o que ela representa"><svg class="ic" aria-hidden="true"><use href="#i-lupa-mais"></use></svg></button>
             </div>
             <div class="card-body">
               <h3>Ano Internacional da Mulher</h3>
@@ -923,8 +962,8 @@ dialog::backdrop{background:rgba(8,4,18,.9);backdrop-filter:blur(6px)}
               <img loading="lazy" src="https://upload.wikimedia.org/wikipedia/commons/4/4a/Portrait_of_male_and_female_wedding_guests_%28AM_80503-1%29.jpg" alt="Retrato de casamento em registro histórico">
               <span class="tag legislacao">Proteção Legal</span>
               <span class="year">1977</span>
-              <button class="zoom" data-foto="https://upload.wikimedia.org/wikipedia/commons/4/4a/Portrait_of_male_and_female_wedding_guests_%28AM_80503-1%29.jpg" data-leg="Retrato de casamento em registro histórico"
-                      aria-label="Ampliar a foto de 1977"><svg class="ic" aria-hidden="true"><use href="#i-lupa-mais"></use></svg></button>
+              <button class="zoom" data-idx="17"
+                      aria-label="Ver a foto de 1977 e o que ela representa"><svg class="ic" aria-hidden="true"><use href="#i-lupa-mais"></use></svg></button>
             </div>
             <div class="card-body">
               <h3>Lei do Divórcio</h3>
@@ -945,8 +984,8 @@ dialog::backdrop{background:rgba(8,4,18,.9);backdrop-filter:blur(6px)}
               <img loading="lazy" src="https://thumb.wikimedia.org/wikipedia/commons/thumb/b/b7/The_United_Nations_Secretariat_Building.jpg/960px-The_United_Nations_Secretariat_Building.jpg" alt="Sede da Organização das Nações Unidas, em Nova York">
               <span class="tag legislacao">Proteção Legal</span>
               <span class="year">1979</span>
-              <button class="zoom" data-foto="https://thumb.wikimedia.org/wikipedia/commons/thumb/b/b7/The_United_Nations_Secretariat_Building.jpg/960px-The_United_Nations_Secretariat_Building.jpg" data-leg="Sede da Organização das Nações Unidas, em Nova York"
-                      aria-label="Ampliar a foto de 1979"><svg class="ic" aria-hidden="true"><use href="#i-lupa-mais"></use></svg></button>
+              <button class="zoom" data-idx="18"
+                      aria-label="Ver a foto de 1979 e o que ela representa"><svg class="ic" aria-hidden="true"><use href="#i-lupa-mais"></use></svg></button>
             </div>
             <div class="card-body">
               <h3>CEDAW nas Nações Unidas</h3>
@@ -967,8 +1006,8 @@ dialog::backdrop{background:rgba(8,4,18,.9);backdrop-filter:blur(6px)}
               <img loading="lazy" src="https://thumb.wikimedia.org/wikipedia/commons/thumb/5/54/Delegacia_da_Mulher_em_Campinas.jpg/960px-Delegacia_da_Mulher_em_Campinas.jpg" alt="Delegacia de Defesa da Mulher, modelo criado no Brasil">
               <span class="tag legislacao">Proteção Legal</span>
               <span class="year">1985</span>
-              <button class="zoom" data-foto="https://thumb.wikimedia.org/wikipedia/commons/thumb/5/54/Delegacia_da_Mulher_em_Campinas.jpg/960px-Delegacia_da_Mulher_em_Campinas.jpg" data-leg="Delegacia de Defesa da Mulher, modelo criado no Brasil"
-                      aria-label="Ampliar a foto de 1985"><svg class="ic" aria-hidden="true"><use href="#i-lupa-mais"></use></svg></button>
+              <button class="zoom" data-idx="19"
+                      aria-label="Ver a foto de 1985 e o que ela representa"><svg class="ic" aria-hidden="true"><use href="#i-lupa-mais"></use></svg></button>
             </div>
             <div class="card-body">
               <h3>A primeira Delegacia da Mulher</h3>
@@ -989,8 +1028,8 @@ dialog::backdrop{background:rgba(8,4,18,.9);backdrop-filter:blur(6px)}
               <img loading="lazy" src="https://thumb.wikimedia.org/wikipedia/commons/thumb/4/47/Promulga%C3%A7%C3%A3o-Constitui%C3%A7%C3%A3o-1988.jpg/960px-Promulga%C3%A7%C3%A3o-Constitui%C3%A7%C3%A3o-1988.jpg" alt="Promulgação da Constituição Federal de 1988">
               <span class="tag legislacao">Proteção Legal</span>
               <span class="year">1988</span>
-              <button class="zoom" data-foto="https://thumb.wikimedia.org/wikipedia/commons/thumb/4/47/Promulga%C3%A7%C3%A3o-Constitui%C3%A7%C3%A3o-1988.jpg/960px-Promulga%C3%A7%C3%A3o-Constitui%C3%A7%C3%A3o-1988.jpg" data-leg="Promulgação da Constituição Federal de 1988"
-                      aria-label="Ampliar a foto de 1988"><svg class="ic" aria-hidden="true"><use href="#i-lupa-mais"></use></svg></button>
+              <button class="zoom" data-idx="20"
+                      aria-label="Ver a foto de 1988 e o que ela representa"><svg class="ic" aria-hidden="true"><use href="#i-lupa-mais"></use></svg></button>
             </div>
             <div class="card-body">
               <h3>Constituição Cidadã</h3>
@@ -1011,8 +1050,8 @@ dialog::backdrop{background:rgba(8,4,18,.9);backdrop-filter:blur(6px)}
               <img loading="lazy" src="https://thumb.wikimedia.org/wikipedia/commons/thumb/b/b4/Organization_of_American_States_Building%2C_Washington%2C_D.C..jpg/960px-Organization_of_American_States_Building%2C_Washington%2C_D.C..jpg" alt="Sede da Organização dos Estados Americanos, em Washington">
               <span class="tag legislacao">Proteção Legal</span>
               <span class="year">1994</span>
-              <button class="zoom" data-foto="https://thumb.wikimedia.org/wikipedia/commons/thumb/b/b4/Organization_of_American_States_Building%2C_Washington%2C_D.C..jpg/960px-Organization_of_American_States_Building%2C_Washington%2C_D.C..jpg" data-leg="Sede da Organização dos Estados Americanos, em Washington"
-                      aria-label="Ampliar a foto de 1994"><svg class="ic" aria-hidden="true"><use href="#i-lupa-mais"></use></svg></button>
+              <button class="zoom" data-idx="21"
+                      aria-label="Ver a foto de 1994 e o que ela representa"><svg class="ic" aria-hidden="true"><use href="#i-lupa-mais"></use></svg></button>
             </div>
             <div class="card-body">
               <h3>Convenção de Belém do Pará</h3>
@@ -1033,8 +1072,8 @@ dialog::backdrop{background:rgba(8,4,18,.9);backdrop-filter:blur(6px)}
               <img loading="lazy" src="https://thumb.wikimedia.org/wikipedia/commons/thumb/4/44/Hillary_Rodham_Clinton_Addresses_the_Fourth_United_Nations_Conference_on_Women_at_the_Beijing_International_Conference_Center_in_Bejiing%2C_China_-_DPLA_-_f930a22fe8ca15312130e94f4f201f45.jpg/960px-thumbnail.jpg" alt="IV Conferência Mundial sobre a Mulher, Pequim, 1995">
               <span class="tag movimento">Movimento e Política</span>
               <span class="year">1995</span>
-              <button class="zoom" data-foto="https://thumb.wikimedia.org/wikipedia/commons/thumb/4/44/Hillary_Rodham_Clinton_Addresses_the_Fourth_United_Nations_Conference_on_Women_at_the_Beijing_International_Conference_Center_in_Bejiing%2C_China_-_DPLA_-_f930a22fe8ca15312130e94f4f201f45.jpg/960px-thumbnail.jpg" data-leg="IV Conferência Mundial sobre a Mulher, Pequim, 1995"
-                      aria-label="Ampliar a foto de 1995"><svg class="ic" aria-hidden="true"><use href="#i-lupa-mais"></use></svg></button>
+              <button class="zoom" data-idx="22"
+                      aria-label="Ver a foto de 1995 e o que ela representa"><svg class="ic" aria-hidden="true"><use href="#i-lupa-mais"></use></svg></button>
             </div>
             <div class="card-body">
               <h3>Pequim e as cotas eleitorais</h3>
@@ -1055,8 +1094,8 @@ dialog::backdrop{background:rgba(8,4,18,.9);backdrop-filter:blur(6px)}
               <img loading="lazy" src="https://thumb.wikimedia.org/wikipedia/commons/thumb/7/73/Plen%C3%A1rio_do_Congresso_%2817181389140%29.jpg/960px-Plen%C3%A1rio_do_Congresso_%2817181389140%29.jpg" alt="Plenário do Congresso Nacional, em Brasília">
               <span class="tag legislacao">Proteção Legal</span>
               <span class="year">2002</span>
-              <button class="zoom" data-foto="https://thumb.wikimedia.org/wikipedia/commons/thumb/7/73/Plen%C3%A1rio_do_Congresso_%2817181389140%29.jpg/960px-Plen%C3%A1rio_do_Congresso_%2817181389140%29.jpg" data-leg="Plenário do Congresso Nacional, em Brasília"
-                      aria-label="Ampliar a foto de 2002"><svg class="ic" aria-hidden="true"><use href="#i-lupa-mais"></use></svg></button>
+              <button class="zoom" data-idx="23"
+                      aria-label="Ver a foto de 2002 e o que ela representa"><svg class="ic" aria-hidden="true"><use href="#i-lupa-mais"></use></svg></button>
             </div>
             <div class="card-body">
               <h3>Novo Código Civil</h3>
@@ -1077,8 +1116,8 @@ dialog::backdrop{background:rgba(8,4,18,.9);backdrop-filter:blur(6px)}
               <img loading="lazy" src="https://thumb.wikimedia.org/wikipedia/commons/thumb/c/cd/Maria_da_Penha_em_novembro_de_2018_%28cropped_2%29.jpg/960px-Maria_da_Penha_em_novembro_de_2018_%28cropped_2%29.jpg" alt="Maria da Penha Maia Fernandes, que deu nome à lei">
               <span class="tag legislacao">Proteção Legal</span>
               <span class="year">2006</span>
-              <button class="zoom" data-foto="https://thumb.wikimedia.org/wikipedia/commons/thumb/c/cd/Maria_da_Penha_em_novembro_de_2018_%28cropped_2%29.jpg/960px-Maria_da_Penha_em_novembro_de_2018_%28cropped_2%29.jpg" data-leg="Maria da Penha Maia Fernandes, que deu nome à lei"
-                      aria-label="Ampliar a foto de 2006"><svg class="ic" aria-hidden="true"><use href="#i-lupa-mais"></use></svg></button>
+              <button class="zoom" data-idx="24"
+                      aria-label="Ver a foto de 2006 e o que ela representa"><svg class="ic" aria-hidden="true"><use href="#i-lupa-mais"></use></svg></button>
             </div>
             <div class="card-body">
               <h3>Lei Maria da Penha</h3>
@@ -1099,8 +1138,8 @@ dialog::backdrop{background:rgba(8,4,18,.9);backdrop-filter:blur(6px)}
               <img loading="lazy" src="https://thumb.wikimedia.org/wikipedia/commons/thumb/2/20/Manifesta%C3%A7%C3%A3o-contra-feminic%C3%ADdio-5.jpg/960px-Manifesta%C3%A7%C3%A3o-contra-feminic%C3%ADdio-5.jpg" alt="Ato público pelo fim da violência contra a mulher">
               <span class="tag legislacao">Proteção Legal</span>
               <span class="year">2013</span>
-              <button class="zoom" data-foto="https://thumb.wikimedia.org/wikipedia/commons/thumb/2/20/Manifesta%C3%A7%C3%A3o-contra-feminic%C3%ADdio-5.jpg/960px-Manifesta%C3%A7%C3%A3o-contra-feminic%C3%ADdio-5.jpg" data-leg="Ato público pelo fim da violência contra a mulher"
-                      aria-label="Ampliar a foto de 2013"><svg class="ic" aria-hidden="true"><use href="#i-lupa-mais"></use></svg></button>
+              <button class="zoom" data-idx="25"
+                      aria-label="Ver a foto de 2013 e o que ela representa"><svg class="ic" aria-hidden="true"><use href="#i-lupa-mais"></use></svg></button>
             </div>
             <div class="card-body">
               <h3>Atendimento integral no SUS</h3>
@@ -1121,8 +1160,8 @@ dialog::backdrop{background:rgba(8,4,18,.9);backdrop-filter:blur(6px)}
               <img loading="lazy" src="https://thumb.wikimedia.org/wikipedia/commons/thumb/4/48/Manifesta%C3%A7%C3%A3o-contra-feminic%C3%ADdio-4.jpg/960px-Manifesta%C3%A7%C3%A3o-contra-feminic%C3%ADdio-4.jpg" alt="Manifestação contra o feminicídio no Brasil">
               <span class="tag legislacao">Proteção Legal</span>
               <span class="year">2015</span>
-              <button class="zoom" data-foto="https://thumb.wikimedia.org/wikipedia/commons/thumb/4/48/Manifesta%C3%A7%C3%A3o-contra-feminic%C3%ADdio-4.jpg/960px-Manifesta%C3%A7%C3%A3o-contra-feminic%C3%ADdio-4.jpg" data-leg="Manifestação contra o feminicídio no Brasil"
-                      aria-label="Ampliar a foto de 2015"><svg class="ic" aria-hidden="true"><use href="#i-lupa-mais"></use></svg></button>
+              <button class="zoom" data-idx="26"
+                      aria-label="Ver a foto de 2015 e o que ela representa"><svg class="ic" aria-hidden="true"><use href="#i-lupa-mais"></use></svg></button>
             </div>
             <div class="card-body">
               <h3>Lei do Feminicídio</h3>
@@ -1143,8 +1182,8 @@ dialog::backdrop{background:rgba(8,4,18,.9);backdrop-filter:blur(6px)}
               <img loading="lazy" src="https://thumb.wikimedia.org/wikipedia/commons/thumb/e/e9/Dia-da-mulher-manifestacao-na-praca-da-se-sao-paulo_%2832946536110%29.jpg/960px-Dia-da-mulher-manifestacao-na-praca-da-se-sao-paulo_%2832946536110%29.jpg" alt="Ato do 8 de Março na Praça da Sé, São Paulo">
               <span class="tag legislacao">Proteção Legal</span>
               <span class="year">2018</span>
-              <button class="zoom" data-foto="https://thumb.wikimedia.org/wikipedia/commons/thumb/e/e9/Dia-da-mulher-manifestacao-na-praca-da-se-sao-paulo_%2832946536110%29.jpg/960px-Dia-da-mulher-manifestacao-na-praca-da-se-sao-paulo_%2832946536110%29.jpg" data-leg="Ato do 8 de Março na Praça da Sé, São Paulo"
-                      aria-label="Ampliar a foto de 2018"><svg class="ic" aria-hidden="true"><use href="#i-lupa-mais"></use></svg></button>
+              <button class="zoom" data-idx="27"
+                      aria-label="Ver a foto de 2018 e o que ela representa"><svg class="ic" aria-hidden="true"><use href="#i-lupa-mais"></use></svg></button>
             </div>
             <div class="card-body">
               <h3>Importunação sexual é crime</h3>
@@ -1165,8 +1204,8 @@ dialog::backdrop{background:rgba(8,4,18,.9);backdrop-filter:blur(6px)}
               <img loading="lazy" src="https://thumb.wikimedia.org/wikipedia/commons/thumb/0/05/DEAM_%285641876582%29.jpg/960px-DEAM_%285641876582%29.jpg" alt="Atendimento em delegacia especializada de defesa da mulher">
               <span class="tag legislacao">Proteção Legal</span>
               <span class="year">2019</span>
-              <button class="zoom" data-foto="https://thumb.wikimedia.org/wikipedia/commons/thumb/0/05/DEAM_%285641876582%29.jpg/960px-DEAM_%285641876582%29.jpg" data-leg="Atendimento em delegacia especializada de defesa da mulher"
-                      aria-label="Ampliar a foto de 2019"><svg class="ic" aria-hidden="true"><use href="#i-lupa-mais"></use></svg></button>
+              <button class="zoom" data-idx="28"
+                      aria-label="Ver a foto de 2019 e o que ela representa"><svg class="ic" aria-hidden="true"><use href="#i-lupa-mais"></use></svg></button>
             </div>
             <div class="card-body">
               <h3>Medida protetiva na delegacia</h3>
@@ -1187,8 +1226,8 @@ dialog::backdrop{background:rgba(8,4,18,.9);backdrop-filter:blur(6px)}
               <img loading="lazy" src="https://thumb.wikimedia.org/wikipedia/commons/thumb/0/06/Manifesta%C3%A7%C3%A3o-contra-feminic%C3%ADdio-2.jpg/960px-Manifesta%C3%A7%C3%A3o-contra-feminic%C3%ADdio-2.jpg" alt="Mobilização pelo fim da violência contra a mulher">
               <span class="tag legislacao">Proteção Legal</span>
               <span class="year">2021</span>
-              <button class="zoom" data-foto="https://thumb.wikimedia.org/wikipedia/commons/thumb/0/06/Manifesta%C3%A7%C3%A3o-contra-feminic%C3%ADdio-2.jpg/960px-Manifesta%C3%A7%C3%A3o-contra-feminic%C3%ADdio-2.jpg" data-leg="Mobilização pelo fim da violência contra a mulher"
-                      aria-label="Ampliar a foto de 2021"><svg class="ic" aria-hidden="true"><use href="#i-lupa-mais"></use></svg></button>
+              <button class="zoom" data-idx="29"
+                      aria-label="Ver a foto de 2021 e o que ela representa"><svg class="ic" aria-hidden="true"><use href="#i-lupa-mais"></use></svg></button>
             </div>
             <div class="card-body">
               <h3>Perseguição vira crime</h3>
@@ -1209,8 +1248,8 @@ dialog::backdrop{background:rgba(8,4,18,.9);backdrop-filter:blur(6px)}
               <img loading="lazy" src="https://thumb.wikimedia.org/wikipedia/commons/thumb/c/c1/2023-02-01_Bancada_Feminina.jpg/960px-2023-02-01_Bancada_Feminina.jpg" alt="Bancada feminina do Congresso Nacional">
               <span class="tag movimento">Movimento e Política</span>
               <span class="year">2021</span>
-              <button class="zoom" data-foto="https://thumb.wikimedia.org/wikipedia/commons/thumb/c/c1/2023-02-01_Bancada_Feminina.jpg/960px-2023-02-01_Bancada_Feminina.jpg" data-leg="Bancada feminina do Congresso Nacional"
-                      aria-label="Ampliar a foto de 2021"><svg class="ic" aria-hidden="true"><use href="#i-lupa-mais"></use></svg></button>
+              <button class="zoom" data-idx="30"
+                      aria-label="Ver a foto de 2021 e o que ela representa"><svg class="ic" aria-hidden="true"><use href="#i-lupa-mais"></use></svg></button>
             </div>
             <div class="card-body">
               <h3>Violência política de gênero</h3>
@@ -1231,8 +1270,8 @@ dialog::backdrop{background:rgba(8,4,18,.9);backdrop-filter:blur(6px)}
               <img loading="lazy" src="https://thumb.wikimedia.org/wikipedia/commons/thumb/2/28/Janice_Glenn_Acting_Director_of_Illinois_Department_of_Human_Rights_Equal_Pay_Day_Rally_and_Press_Conference_Chicago_Illinois_4-10-18_0703_%2840688403994%29.jpg/960px-Janice_Glenn_Acting_Director_of_Illinois_Department_of_Human_Rights_Equal_Pay_Day_Rally_and_Press_Conference_Chicago_Illinois_4-10-18_0703_%2840688403994%29.jpg" alt="Ato público pela igualdade salarial entre mulheres e homens">
               <span class="tag trabalho">Trabalho</span>
               <span class="year">2023</span>
-              <button class="zoom" data-foto="https://thumb.wikimedia.org/wikipedia/commons/thumb/2/28/Janice_Glenn_Acting_Director_of_Illinois_Department_of_Human_Rights_Equal_Pay_Day_Rally_and_Press_Conference_Chicago_Illinois_4-10-18_0703_%2840688403994%29.jpg/960px-Janice_Glenn_Acting_Director_of_Illinois_Department_of_Human_Rights_Equal_Pay_Day_Rally_and_Press_Conference_Chicago_Illinois_4-10-18_0703_%2840688403994%29.jpg" data-leg="Ato público pela igualdade salarial entre mulheres e homens"
-                      aria-label="Ampliar a foto de 2023"><svg class="ic" aria-hidden="true"><use href="#i-lupa-mais"></use></svg></button>
+              <button class="zoom" data-idx="31"
+                      aria-label="Ver a foto de 2023 e o que ela representa"><svg class="ic" aria-hidden="true"><use href="#i-lupa-mais"></use></svg></button>
             </div>
             <div class="card-body">
               <h3>Lei da Igualdade Salarial</h3>
@@ -1253,8 +1292,8 @@ dialog::backdrop{background:rgba(8,4,18,.9);backdrop-filter:blur(6px)}
               <img loading="lazy" src="https://thumb.wikimedia.org/wikipedia/commons/thumb/2/20/Manifesta%C3%A7%C3%A3o-contra-feminic%C3%ADdio-5.jpg/960px-Manifesta%C3%A7%C3%A3o-contra-feminic%C3%ADdio-5.jpg" alt="Manifestação pelo fim do feminicídio">
               <span class="tag legislacao">Proteção Legal</span>
               <span class="year">2024</span>
-              <button class="zoom" data-foto="https://thumb.wikimedia.org/wikipedia/commons/thumb/2/20/Manifesta%C3%A7%C3%A3o-contra-feminic%C3%ADdio-5.jpg/960px-Manifesta%C3%A7%C3%A3o-contra-feminic%C3%ADdio-5.jpg" data-leg="Manifestação pelo fim do feminicídio"
-                      aria-label="Ampliar a foto de 2024"><svg class="ic" aria-hidden="true"><use href="#i-lupa-mais"></use></svg></button>
+              <button class="zoom" data-idx="32"
+                      aria-label="Ver a foto de 2024 e o que ela representa"><svg class="ic" aria-hidden="true"><use href="#i-lupa-mais"></use></svg></button>
             </div>
             <div class="card-body">
               <h3>Feminicídio como crime autônomo</h3>
@@ -4410,139 +4449,172 @@ dialog::backdrop{background:rgba(8,4,18,.9);backdrop-filter:blur(6px)}
       <div class="titulo">
         <span class="etiqueta">Acervo</span>
         <h2>Galeria histórica</h2>
-        <p>Registros de 1827 a 2024. Clique em qualquer imagem para ampliar.</p>
+        <p>Registros de 1827 a 2024. Clique em qualquer imagem para ver a explicação, a relevância e o impacto daquele registro, e navegue pela sequência com as setas.</p>
       </div>
       <div class="galeria" id="galeria-grade">
 
-        <figure class="tilt" data-foto="https://upload.wikimedia.org/wikipedia/commons/0/0e/Sewing_lesson_in_a_girl_class_in_Hellemmes_around_1900.jpg" data-leg="Aula em uma classe de meninas, registro de cerca de 1900" title="Ampliar">
+        <figure class="tilt" data-idx="0" tabindex="0" role="button"
+                title="Ver 1827 e o que a imagem representa">
           <img loading="lazy" src="https://upload.wikimedia.org/wikipedia/commons/0/0e/Sewing_lesson_in_a_girl_class_in_Hellemmes_around_1900.jpg" alt="Aula em uma classe de meninas, registro de cerca de 1900">
           <figcaption>1827</figcaption>
         </figure>
-        <figure class="tilt" data-foto="https://upload.wikimedia.org/wikipedia/commons/4/43/Woman%27s_Rights_Convention.jpg" data-leg="Registro da primeira convenção pelos direitos das mulheres, Estados Unidos" title="Ampliar">
+        <figure class="tilt" data-idx="1" tabindex="0" role="button"
+                title="Ver 1848 e o que a imagem representa">
           <img loading="lazy" src="https://upload.wikimedia.org/wikipedia/commons/4/43/Woman%27s_Rights_Convention.jpg" alt="Registro da primeira convenção pelos direitos das mulheres, Estados Unidos">
           <figcaption>1848</figcaption>
         </figure>
-        <figure class="tilt" data-foto="https://thumb.wikimedia.org/wikipedia/commons/thumb/5/51/Group_of_mainly_female_shirtwaist_workers_on_strike%2C_in_a_room%2C_New_York.png/960px-Group_of_mainly_female_shirtwaist_workers_on_strike%2C_in_a_room%2C_New_York.png" data-leg="Operárias em greve nas fábricas de camisas de Nova York" title="Ampliar">
+        <figure class="tilt" data-idx="2" tabindex="0" role="button"
+                title="Ver 1857 e o que a imagem representa">
           <img loading="lazy" src="https://thumb.wikimedia.org/wikipedia/commons/thumb/5/51/Group_of_mainly_female_shirtwaist_workers_on_strike%2C_in_a_room%2C_New_York.png/960px-Group_of_mainly_female_shirtwaist_workers_on_strike%2C_in_a_room%2C_New_York.png" alt="Operárias em greve nas fábricas de camisas de Nova York">
           <figcaption>1857</figcaption>
         </figure>
-        <figure class="tilt" data-foto="https://upload.wikimedia.org/wikipedia/commons/e/ec/Ritalobato.jpg" data-leg="Rita Lobato Velho Lopes, primeira mulher a se formar em medicina no Brasil" title="Ampliar">
+        <figure class="tilt" data-idx="3" tabindex="0" role="button"
+                title="Ver 1887 e o que a imagem representa">
           <img loading="lazy" src="https://upload.wikimedia.org/wikipedia/commons/e/ec/Ritalobato.jpg" alt="Rita Lobato Velho Lopes, primeira mulher a se formar em medicina no Brasil">
           <figcaption>1887</figcaption>
         </figure>
-        <figure class="tilt" data-foto="https://thumb.wikimedia.org/wikipedia/commons/thumb/6/6f/1893_New_Zealand_suffrage_petition.jpg/960px-1893_New_Zealand_suffrage_petition.jpg" data-leg="Petição pelo sufrágio feminino na Nova Zelândia, 1893" title="Ampliar">
+        <figure class="tilt" data-idx="4" tabindex="0" role="button"
+                title="Ver 1893 e o que a imagem representa">
           <img loading="lazy" src="https://thumb.wikimedia.org/wikipedia/commons/thumb/6/6f/1893_New_Zealand_suffrage_petition.jpg/960px-1893_New_Zealand_suffrage_petition.jpg" alt="Petição pelo sufrágio feminino na Nova Zelândia, 1893">
           <figcaption>1893</figcaption>
         </figure>
-        <figure class="tilt" data-foto="https://upload.wikimedia.org/wikipedia/commons/8/89/Clara_Zetkin_1930.jpg" data-leg="Clara Zetkin, idealizadora do Dia Internacional da Mulher" title="Ampliar">
+        <figure class="tilt" data-idx="5" tabindex="0" role="button"
+                title="Ver 1910 e o que a imagem representa">
           <img loading="lazy" src="https://upload.wikimedia.org/wikipedia/commons/8/89/Clara_Zetkin_1930.jpg" alt="Clara Zetkin, idealizadora do Dia Internacional da Mulher">
           <figcaption>1910</figcaption>
         </figure>
-        <figure class="tilt extra" data-foto="https://thumb.wikimedia.org/wikipedia/commons/thumb/1/15/Suffrage_worker_with_newspaper_clippings_on_the_passage_of_the_Nineteenth_Amendment_granting_women_the_right_to_vote_by_the_United_States_Senate.jpg/960px-Suffrage_worker_with_newspaper_clippings_on_the_passage_of_the_Nineteenth_Amendment_granting_women_the_right_to_vote_by_the_United_States_Senate.jpg" data-leg="Ativista sufragista com recortes de jornal sobre a conquista do voto" title="Ampliar">
+        <figure class="tilt extra" data-idx="6" tabindex="0" role="button"
+                title="Ver 1918 e o que a imagem representa">
           <img loading="lazy" src="https://thumb.wikimedia.org/wikipedia/commons/thumb/1/15/Suffrage_worker_with_newspaper_clippings_on_the_passage_of_the_Nineteenth_Amendment_granting_women_the_right_to_vote_by_the_United_States_Senate.jpg/960px-Suffrage_worker_with_newspaper_clippings_on_the_passage_of_the_Nineteenth_Amendment_granting_women_the_right_to_vote_by_the_United_States_Senate.jpg" alt="Ativista sufragista com recortes de jornal sobre a conquista do voto">
           <figcaption>1918</figcaption>
         </figure>
-        <figure class="tilt extra" data-foto="https://thumb.wikimedia.org/wikipedia/commons/thumb/1/15/Suffrage_worker_with_newspaper_clippings_on_the_passage_of_the_Nineteenth_Amendment_granting_women_the_right_to_vote_by_the_United_States_Senate.jpg/960px-Suffrage_worker_with_newspaper_clippings_on_the_passage_of_the_Nineteenth_Amendment_granting_women_the_right_to_vote_by_the_United_States_Senate.jpg" data-leg="Sufragista celebra a aprovação da 19ª Emenda no Senado dos Estados Unidos" title="Ampliar">
+        <figure class="tilt extra" data-idx="7" tabindex="0" role="button"
+                title="Ver 1920 e o que a imagem representa">
           <img loading="lazy" src="https://thumb.wikimedia.org/wikipedia/commons/thumb/1/15/Suffrage_worker_with_newspaper_clippings_on_the_passage_of_the_Nineteenth_Amendment_granting_women_the_right_to_vote_by_the_United_States_Senate.jpg/960px-Suffrage_worker_with_newspaper_clippings_on_the_passage_of_the_Nineteenth_Amendment_granting_women_the_right_to_vote_by_the_United_States_Senate.jpg" alt="Sufragista celebra a aprovação da 19ª Emenda no Senado dos Estados Unidos">
           <figcaption>1920</figcaption>
         </figure>
-        <figure class="tilt extra" data-foto="https://upload.wikimedia.org/wikipedia/commons/6/66/Celina_Guimar%C3%A3es_Viana.jpg" data-leg="Celina Guimarães Viana, primeira eleitora registrada do Brasil" title="Ampliar">
+        <figure class="tilt extra" data-idx="8" tabindex="0" role="button"
+                title="Ver 1928 e o que a imagem representa">
           <img loading="lazy" src="https://upload.wikimedia.org/wikipedia/commons/6/66/Celina_Guimar%C3%A3es_Viana.jpg" alt="Celina Guimarães Viana, primeira eleitora registrada do Brasil">
           <figcaption>1928</figcaption>
         </figure>
-        <figure class="tilt extra" data-foto="https://thumb.wikimedia.org/wikipedia/commons/thumb/2/28/Bertha_Lutz_1925.jpg/960px-Bertha_Lutz_1925.jpg" data-leg="Bertha Lutz, líder do movimento sufragista brasileiro" title="Ampliar">
+        <figure class="tilt extra" data-idx="9" tabindex="0" role="button"
+                title="Ver 1932 e o que a imagem representa">
           <img loading="lazy" src="https://thumb.wikimedia.org/wikipedia/commons/thumb/2/28/Bertha_Lutz_1925.jpg/960px-Bertha_Lutz_1925.jpg" alt="Bertha Lutz, líder do movimento sufragista brasileiro">
           <figcaption>1932</figcaption>
         </figure>
-        <figure class="tilt extra" data-foto="https://upload.wikimedia.org/wikipedia/commons/9/95/Carlota_Pereira_de_Queiroz_1920%27s.jpg" data-leg="Carlota Pereira de Queirós, primeira deputada federal do Brasil" title="Ampliar">
+        <figure class="tilt extra" data-idx="10" tabindex="0" role="button"
+                title="Ver 1934 e o que a imagem representa">
           <img loading="lazy" src="https://upload.wikimedia.org/wikipedia/commons/9/95/Carlota_Pereira_de_Queiroz_1920%27s.jpg" alt="Carlota Pereira de Queirós, primeira deputada federal do Brasil">
           <figcaption>1934</figcaption>
         </figure>
-        <figure class="tilt extra" data-foto="https://thumb.wikimedia.org/wikipedia/commons/thumb/1/12/Weavers_at_work_LOC_2163450764.jpg/960px-Weavers_at_work_LOC_2163450764.jpg" data-leg="Tecelãs em jornada de trabalho na indústria têxtil" title="Ampliar">
+        <figure class="tilt extra" data-idx="11" tabindex="0" role="button"
+                title="Ver 1943 e o que a imagem representa">
           <img loading="lazy" src="https://thumb.wikimedia.org/wikipedia/commons/thumb/1/12/Weavers_at_work_LOC_2163450764.jpg/960px-Weavers_at_work_LOC_2163450764.jpg" alt="Tecelãs em jornada de trabalho na indústria têxtil">
           <figcaption>1943</figcaption>
         </figure>
-        <figure class="tilt extra" data-foto="https://thumb.wikimedia.org/wikipedia/commons/thumb/3/32/Bertha_Lutz_07.jpg/960px-Bertha_Lutz_07.jpg" data-leg="Bertha Lutz, delegada do Brasil na conferência de fundação da ONU" title="Ampliar">
+        <figure class="tilt extra" data-idx="12" tabindex="0" role="button"
+                title="Ver 1945 e o que a imagem representa">
           <img loading="lazy" src="https://thumb.wikimedia.org/wikipedia/commons/thumb/3/32/Bertha_Lutz_07.jpg/960px-Bertha_Lutz_07.jpg" alt="Bertha Lutz, delegada do Brasil na conferência de fundação da ONU">
           <figcaption>1945</figcaption>
         </figure>
-        <figure class="tilt extra" data-foto="https://upload.wikimedia.org/wikipedia/commons/c/c9/Simone_de_Beauvoir_1967_%28cropped%29.jpg" data-leg="Simone de Beauvoir, autora de O Segundo Sexo" title="Ampliar">
+        <figure class="tilt extra" data-idx="13" tabindex="0" role="button"
+                title="Ver 1949 e o que a imagem representa">
           <img loading="lazy" src="https://upload.wikimedia.org/wikipedia/commons/c/c9/Simone_de_Beauvoir_1967_%28cropped%29.jpg" alt="Simone de Beauvoir, autora de O Segundo Sexo">
           <figcaption>1949</figcaption>
         </figure>
-        <figure class="tilt extra" data-foto="https://thumb.wikimedia.org/wikipedia/commons/thumb/1/12/International_Labor_Conference_1929_Japan.jpg/960px-International_Labor_Conference_1929_Japan.jpg" data-leg="Conferência Internacional do Trabalho, registro histórico da OIT" title="Ampliar">
+        <figure class="tilt extra" data-idx="14" tabindex="0" role="button"
+                title="Ver 1951 e o que a imagem representa">
           <img loading="lazy" src="https://thumb.wikimedia.org/wikipedia/commons/thumb/1/12/International_Labor_Conference_1929_Japan.jpg/960px-International_Labor_Conference_1929_Japan.jpg" alt="Conferência Internacional do Trabalho, registro histórico da OIT">
           <figcaption>1951</figcaption>
         </figure>
-        <figure class="tilt extra" data-foto="https://thumb.wikimedia.org/wikipedia/commons/thumb/b/be/A_Young_Woman_%28Heiress%29_Prepares_to_Sign_a_Document_Met_DP885282.jpg/960px-A_Young_Woman_%28Heiress%29_Prepares_to_Sign_a_Document_Met_DP885282.jpg" data-leg="Mulher assina um documento, imagem de acervo histórico" title="Ampliar">
+        <figure class="tilt extra" data-idx="15" tabindex="0" role="button"
+                title="Ver 1962 e o que a imagem representa">
           <img loading="lazy" src="https://thumb.wikimedia.org/wikipedia/commons/thumb/b/be/A_Young_Woman_%28Heiress%29_Prepares_to_Sign_a_Document_Met_DP885282.jpg/960px-A_Young_Woman_%28Heiress%29_Prepares_to_Sign_a_Document_Met_DP885282.jpg" alt="Mulher assina um documento, imagem de acervo histórico">
           <figcaption>1962</figcaption>
         </figure>
-        <figure class="tilt extra" data-foto="https://upload.wikimedia.org/wikipedia/commons/7/73/Stamp_of_Brazil_-_1975_-_Colnect_152238_-_International_Women_s_Year.jpeg" data-leg="Selo brasileiro comemorativo do Ano Internacional da Mulher, 1975" title="Ampliar">
+        <figure class="tilt extra" data-idx="16" tabindex="0" role="button"
+                title="Ver 1975 e o que a imagem representa">
           <img loading="lazy" src="https://upload.wikimedia.org/wikipedia/commons/7/73/Stamp_of_Brazil_-_1975_-_Colnect_152238_-_International_Women_s_Year.jpeg" alt="Selo brasileiro comemorativo do Ano Internacional da Mulher, 1975">
           <figcaption>1975</figcaption>
         </figure>
-        <figure class="tilt extra" data-foto="https://upload.wikimedia.org/wikipedia/commons/4/4a/Portrait_of_male_and_female_wedding_guests_%28AM_80503-1%29.jpg" data-leg="Retrato de casamento em registro histórico" title="Ampliar">
+        <figure class="tilt extra" data-idx="17" tabindex="0" role="button"
+                title="Ver 1977 e o que a imagem representa">
           <img loading="lazy" src="https://upload.wikimedia.org/wikipedia/commons/4/4a/Portrait_of_male_and_female_wedding_guests_%28AM_80503-1%29.jpg" alt="Retrato de casamento em registro histórico">
           <figcaption>1977</figcaption>
         </figure>
-        <figure class="tilt extra" data-foto="https://thumb.wikimedia.org/wikipedia/commons/thumb/b/b7/The_United_Nations_Secretariat_Building.jpg/960px-The_United_Nations_Secretariat_Building.jpg" data-leg="Sede da Organização das Nações Unidas, em Nova York" title="Ampliar">
+        <figure class="tilt extra" data-idx="18" tabindex="0" role="button"
+                title="Ver 1979 e o que a imagem representa">
           <img loading="lazy" src="https://thumb.wikimedia.org/wikipedia/commons/thumb/b/b7/The_United_Nations_Secretariat_Building.jpg/960px-The_United_Nations_Secretariat_Building.jpg" alt="Sede da Organização das Nações Unidas, em Nova York">
           <figcaption>1979</figcaption>
         </figure>
-        <figure class="tilt extra" data-foto="https://thumb.wikimedia.org/wikipedia/commons/thumb/5/54/Delegacia_da_Mulher_em_Campinas.jpg/960px-Delegacia_da_Mulher_em_Campinas.jpg" data-leg="Delegacia de Defesa da Mulher, modelo criado no Brasil" title="Ampliar">
+        <figure class="tilt extra" data-idx="19" tabindex="0" role="button"
+                title="Ver 1985 e o que a imagem representa">
           <img loading="lazy" src="https://thumb.wikimedia.org/wikipedia/commons/thumb/5/54/Delegacia_da_Mulher_em_Campinas.jpg/960px-Delegacia_da_Mulher_em_Campinas.jpg" alt="Delegacia de Defesa da Mulher, modelo criado no Brasil">
           <figcaption>1985</figcaption>
         </figure>
-        <figure class="tilt extra" data-foto="https://thumb.wikimedia.org/wikipedia/commons/thumb/4/47/Promulga%C3%A7%C3%A3o-Constitui%C3%A7%C3%A3o-1988.jpg/960px-Promulga%C3%A7%C3%A3o-Constitui%C3%A7%C3%A3o-1988.jpg" data-leg="Promulgação da Constituição Federal de 1988" title="Ampliar">
+        <figure class="tilt extra" data-idx="20" tabindex="0" role="button"
+                title="Ver 1988 e o que a imagem representa">
           <img loading="lazy" src="https://thumb.wikimedia.org/wikipedia/commons/thumb/4/47/Promulga%C3%A7%C3%A3o-Constitui%C3%A7%C3%A3o-1988.jpg/960px-Promulga%C3%A7%C3%A3o-Constitui%C3%A7%C3%A3o-1988.jpg" alt="Promulgação da Constituição Federal de 1988">
           <figcaption>1988</figcaption>
         </figure>
-        <figure class="tilt extra" data-foto="https://thumb.wikimedia.org/wikipedia/commons/thumb/b/b4/Organization_of_American_States_Building%2C_Washington%2C_D.C..jpg/960px-Organization_of_American_States_Building%2C_Washington%2C_D.C..jpg" data-leg="Sede da Organização dos Estados Americanos, em Washington" title="Ampliar">
+        <figure class="tilt extra" data-idx="21" tabindex="0" role="button"
+                title="Ver 1994 e o que a imagem representa">
           <img loading="lazy" src="https://thumb.wikimedia.org/wikipedia/commons/thumb/b/b4/Organization_of_American_States_Building%2C_Washington%2C_D.C..jpg/960px-Organization_of_American_States_Building%2C_Washington%2C_D.C..jpg" alt="Sede da Organização dos Estados Americanos, em Washington">
           <figcaption>1994</figcaption>
         </figure>
-        <figure class="tilt extra" data-foto="https://thumb.wikimedia.org/wikipedia/commons/thumb/4/44/Hillary_Rodham_Clinton_Addresses_the_Fourth_United_Nations_Conference_on_Women_at_the_Beijing_International_Conference_Center_in_Bejiing%2C_China_-_DPLA_-_f930a22fe8ca15312130e94f4f201f45.jpg/960px-thumbnail.jpg" data-leg="IV Conferência Mundial sobre a Mulher, Pequim, 1995" title="Ampliar">
+        <figure class="tilt extra" data-idx="22" tabindex="0" role="button"
+                title="Ver 1995 e o que a imagem representa">
           <img loading="lazy" src="https://thumb.wikimedia.org/wikipedia/commons/thumb/4/44/Hillary_Rodham_Clinton_Addresses_the_Fourth_United_Nations_Conference_on_Women_at_the_Beijing_International_Conference_Center_in_Bejiing%2C_China_-_DPLA_-_f930a22fe8ca15312130e94f4f201f45.jpg/960px-thumbnail.jpg" alt="IV Conferência Mundial sobre a Mulher, Pequim, 1995">
           <figcaption>1995</figcaption>
         </figure>
-        <figure class="tilt extra" data-foto="https://thumb.wikimedia.org/wikipedia/commons/thumb/7/73/Plen%C3%A1rio_do_Congresso_%2817181389140%29.jpg/960px-Plen%C3%A1rio_do_Congresso_%2817181389140%29.jpg" data-leg="Plenário do Congresso Nacional, em Brasília" title="Ampliar">
+        <figure class="tilt extra" data-idx="23" tabindex="0" role="button"
+                title="Ver 2002 e o que a imagem representa">
           <img loading="lazy" src="https://thumb.wikimedia.org/wikipedia/commons/thumb/7/73/Plen%C3%A1rio_do_Congresso_%2817181389140%29.jpg/960px-Plen%C3%A1rio_do_Congresso_%2817181389140%29.jpg" alt="Plenário do Congresso Nacional, em Brasília">
           <figcaption>2002</figcaption>
         </figure>
-        <figure class="tilt extra" data-foto="https://thumb.wikimedia.org/wikipedia/commons/thumb/c/cd/Maria_da_Penha_em_novembro_de_2018_%28cropped_2%29.jpg/960px-Maria_da_Penha_em_novembro_de_2018_%28cropped_2%29.jpg" data-leg="Maria da Penha Maia Fernandes, que deu nome à lei" title="Ampliar">
+        <figure class="tilt extra" data-idx="24" tabindex="0" role="button"
+                title="Ver 2006 e o que a imagem representa">
           <img loading="lazy" src="https://thumb.wikimedia.org/wikipedia/commons/thumb/c/cd/Maria_da_Penha_em_novembro_de_2018_%28cropped_2%29.jpg/960px-Maria_da_Penha_em_novembro_de_2018_%28cropped_2%29.jpg" alt="Maria da Penha Maia Fernandes, que deu nome à lei">
           <figcaption>2006</figcaption>
         </figure>
-        <figure class="tilt extra" data-foto="https://thumb.wikimedia.org/wikipedia/commons/thumb/2/20/Manifesta%C3%A7%C3%A3o-contra-feminic%C3%ADdio-5.jpg/960px-Manifesta%C3%A7%C3%A3o-contra-feminic%C3%ADdio-5.jpg" data-leg="Ato público pelo fim da violência contra a mulher" title="Ampliar">
+        <figure class="tilt extra" data-idx="25" tabindex="0" role="button"
+                title="Ver 2013 e o que a imagem representa">
           <img loading="lazy" src="https://thumb.wikimedia.org/wikipedia/commons/thumb/2/20/Manifesta%C3%A7%C3%A3o-contra-feminic%C3%ADdio-5.jpg/960px-Manifesta%C3%A7%C3%A3o-contra-feminic%C3%ADdio-5.jpg" alt="Ato público pelo fim da violência contra a mulher">
           <figcaption>2013</figcaption>
         </figure>
-        <figure class="tilt extra" data-foto="https://thumb.wikimedia.org/wikipedia/commons/thumb/4/48/Manifesta%C3%A7%C3%A3o-contra-feminic%C3%ADdio-4.jpg/960px-Manifesta%C3%A7%C3%A3o-contra-feminic%C3%ADdio-4.jpg" data-leg="Manifestação contra o feminicídio no Brasil" title="Ampliar">
+        <figure class="tilt extra" data-idx="26" tabindex="0" role="button"
+                title="Ver 2015 e o que a imagem representa">
           <img loading="lazy" src="https://thumb.wikimedia.org/wikipedia/commons/thumb/4/48/Manifesta%C3%A7%C3%A3o-contra-feminic%C3%ADdio-4.jpg/960px-Manifesta%C3%A7%C3%A3o-contra-feminic%C3%ADdio-4.jpg" alt="Manifestação contra o feminicídio no Brasil">
           <figcaption>2015</figcaption>
         </figure>
-        <figure class="tilt extra" data-foto="https://thumb.wikimedia.org/wikipedia/commons/thumb/e/e9/Dia-da-mulher-manifestacao-na-praca-da-se-sao-paulo_%2832946536110%29.jpg/960px-Dia-da-mulher-manifestacao-na-praca-da-se-sao-paulo_%2832946536110%29.jpg" data-leg="Ato do 8 de Março na Praça da Sé, São Paulo" title="Ampliar">
+        <figure class="tilt extra" data-idx="27" tabindex="0" role="button"
+                title="Ver 2018 e o que a imagem representa">
           <img loading="lazy" src="https://thumb.wikimedia.org/wikipedia/commons/thumb/e/e9/Dia-da-mulher-manifestacao-na-praca-da-se-sao-paulo_%2832946536110%29.jpg/960px-Dia-da-mulher-manifestacao-na-praca-da-se-sao-paulo_%2832946536110%29.jpg" alt="Ato do 8 de Março na Praça da Sé, São Paulo">
           <figcaption>2018</figcaption>
         </figure>
-        <figure class="tilt extra" data-foto="https://thumb.wikimedia.org/wikipedia/commons/thumb/0/05/DEAM_%285641876582%29.jpg/960px-DEAM_%285641876582%29.jpg" data-leg="Atendimento em delegacia especializada de defesa da mulher" title="Ampliar">
+        <figure class="tilt extra" data-idx="28" tabindex="0" role="button"
+                title="Ver 2019 e o que a imagem representa">
           <img loading="lazy" src="https://thumb.wikimedia.org/wikipedia/commons/thumb/0/05/DEAM_%285641876582%29.jpg/960px-DEAM_%285641876582%29.jpg" alt="Atendimento em delegacia especializada de defesa da mulher">
           <figcaption>2019</figcaption>
         </figure>
-        <figure class="tilt extra" data-foto="https://thumb.wikimedia.org/wikipedia/commons/thumb/0/06/Manifesta%C3%A7%C3%A3o-contra-feminic%C3%ADdio-2.jpg/960px-Manifesta%C3%A7%C3%A3o-contra-feminic%C3%ADdio-2.jpg" data-leg="Mobilização pelo fim da violência contra a mulher" title="Ampliar">
+        <figure class="tilt extra" data-idx="29" tabindex="0" role="button"
+                title="Ver 2021 e o que a imagem representa">
           <img loading="lazy" src="https://thumb.wikimedia.org/wikipedia/commons/thumb/0/06/Manifesta%C3%A7%C3%A3o-contra-feminic%C3%ADdio-2.jpg/960px-Manifesta%C3%A7%C3%A3o-contra-feminic%C3%ADdio-2.jpg" alt="Mobilização pelo fim da violência contra a mulher">
           <figcaption>2021</figcaption>
         </figure>
-        <figure class="tilt extra" data-foto="https://thumb.wikimedia.org/wikipedia/commons/thumb/c/c1/2023-02-01_Bancada_Feminina.jpg/960px-2023-02-01_Bancada_Feminina.jpg" data-leg="Bancada feminina do Congresso Nacional" title="Ampliar">
+        <figure class="tilt extra" data-idx="30" tabindex="0" role="button"
+                title="Ver 2021 e o que a imagem representa">
           <img loading="lazy" src="https://thumb.wikimedia.org/wikipedia/commons/thumb/c/c1/2023-02-01_Bancada_Feminina.jpg/960px-2023-02-01_Bancada_Feminina.jpg" alt="Bancada feminina do Congresso Nacional">
           <figcaption>2021</figcaption>
         </figure>
-        <figure class="tilt extra" data-foto="https://thumb.wikimedia.org/wikipedia/commons/thumb/2/28/Janice_Glenn_Acting_Director_of_Illinois_Department_of_Human_Rights_Equal_Pay_Day_Rally_and_Press_Conference_Chicago_Illinois_4-10-18_0703_%2840688403994%29.jpg/960px-Janice_Glenn_Acting_Director_of_Illinois_Department_of_Human_Rights_Equal_Pay_Day_Rally_and_Press_Conference_Chicago_Illinois_4-10-18_0703_%2840688403994%29.jpg" data-leg="Ato público pela igualdade salarial entre mulheres e homens" title="Ampliar">
+        <figure class="tilt extra" data-idx="31" tabindex="0" role="button"
+                title="Ver 2023 e o que a imagem representa">
           <img loading="lazy" src="https://thumb.wikimedia.org/wikipedia/commons/thumb/2/28/Janice_Glenn_Acting_Director_of_Illinois_Department_of_Human_Rights_Equal_Pay_Day_Rally_and_Press_Conference_Chicago_Illinois_4-10-18_0703_%2840688403994%29.jpg/960px-Janice_Glenn_Acting_Director_of_Illinois_Department_of_Human_Rights_Equal_Pay_Day_Rally_and_Press_Conference_Chicago_Illinois_4-10-18_0703_%2840688403994%29.jpg" alt="Ato público pela igualdade salarial entre mulheres e homens">
           <figcaption>2023</figcaption>
         </figure>
-        <figure class="tilt extra" data-foto="https://thumb.wikimedia.org/wikipedia/commons/thumb/2/20/Manifesta%C3%A7%C3%A3o-contra-feminic%C3%ADdio-5.jpg/960px-Manifesta%C3%A7%C3%A3o-contra-feminic%C3%ADdio-5.jpg" data-leg="Manifestação pelo fim do feminicídio" title="Ampliar">
+        <figure class="tilt extra" data-idx="32" tabindex="0" role="button"
+                title="Ver 2024 e o que a imagem representa">
           <img loading="lazy" src="https://thumb.wikimedia.org/wikipedia/commons/thumb/2/20/Manifesta%C3%A7%C3%A3o-contra-feminic%C3%ADdio-5.jpg/960px-Manifesta%C3%A7%C3%A3o-contra-feminic%C3%ADdio-5.jpg" alt="Manifestação pelo fim do feminicídio">
           <figcaption>2024</figcaption>
         </figure>
@@ -4700,11 +4772,28 @@ dialog::backdrop{background:rgba(8,4,18,.9);backdrop-filter:blur(6px)}
 <button id="ao-topo" aria-label="Voltar ao topo"><svg class="ic" aria-hidden="true"><use href="#i-seta-cima"></use></svg></button>
 <div id="aviso" role="status"></div>
 
-<dialog id="lightbox">
+<dialog id="lightbox" aria-label="Visor de imagens">
   <div class="lb">
     <button class="lb-x" id="lb-x" aria-label="Fechar"><svg class="ic" aria-hidden="true"><use href="#i-fechar"></use></svg></button>
-    <img id="lb-img" alt="">
-    <div class="lb-txt" id="lb-txt"></div>
+    <div class="lb-corpo" id="lb-corpo">
+      <div class="lb-foto">
+        <img id="lb-img" alt="">
+        <button class="lb-nav lb-ant" id="lb-ant" aria-label="Imagem anterior"><svg class="ic" aria-hidden="true"><use href="#i-seta-esq"></use></svg></button>
+        <button class="lb-nav lb-prox" id="lb-prox" aria-label="Próxima imagem"><svg class="ic" aria-hidden="true"><use href="#i-seta-dir"></use></svg></button>
+        <span class="lb-contador" id="lb-contador"></span>
+      </div>
+      <div class="lb-txt">
+        <span class="lb-ano" id="lb-ano"></span>
+        <h3 id="lb-titulo"></h3>
+        <p class="lb-leg" id="lb-leg"></p>
+        <div class="lb-impacto">
+          <h4>Relevância e impacto</h4>
+          <p id="lb-imp"></p>
+        </div>
+        <small>Acervo público do Wikimedia Commons</small>
+      </div>
+    </div>
+    <div class="lb-dica" id="lb-dica">Arraste para o lado ou use as setas para ver a próxima imagem</div>
   </div>
 </dialog>
 
@@ -4748,17 +4837,87 @@ nav.addEventListener('click', e => { if(e.target.tagName === 'A') nav.classList.
 
 const lightbox = $('#lightbox');
 
-/* ---------------------------------------------------------- lightbox */
+/* ------------------------------------------------------------- visor */
+const corpo = $('#lb-corpo');
+let fotoAtual = -1;
+
+function pintarFoto(i, direcao){
+  const f = FOTOS[i];
+  if(!f) return;
+  fotoAtual = i;
+  lightbox.classList.remove('sem-sequencia');
+  $('#lb-img').src = f.s;
+  $('#lb-img').alt = f.l;
+  $('#lb-ano').textContent = f.a;
+  $('#lb-titulo').textContent = f.t;
+  $('#lb-leg').textContent = f.l;
+  $('#lb-imp').textContent = f.i;
+  $('#lb-contador').textContent = (i + 1) + ' de ' + FOTOS.length;
+  if(direcao){
+    corpo.classList.remove('troca-dir', 'troca-esq');
+    void corpo.offsetWidth;                       // reinicia a animacao
+    corpo.classList.add(direcao > 0 ? 'troca-dir' : 'troca-esq');
+  }
+}
+
+function abrirVisor(i){
+  pintarFoto(i, 0);
+  if(!lightbox.open) lightbox.showModal();
+}
+
+function passar(passo){
+  if(fotoAtual < 0) return;
+  pintarFoto((fotoAtual + passo + FOTOS.length) % FOTOS.length, passo);
+}
+
+/* retrato das citacoes: mostra so a imagem, sem sequencia */
+function abrirAvulsa(src, legenda){
+  lightbox.classList.add('sem-sequencia');
+  fotoAtual = -1;
+  $('#lb-img').src = src;
+  $('#lb-img').alt = legenda;
+  $('#lb-titulo').textContent = legenda;
+  $('#lb-leg').textContent = '';
+  if(!lightbox.open) lightbox.showModal();
+}
+
 document.addEventListener('click', e => {
-  const alvo = e.target.closest('[data-foto]');
-  if(!alvo) return;
-  $('#lb-img').src = alvo.dataset.foto;
-  $('#lb-img').alt = alvo.dataset.leg || '';
-  $('#lb-txt').innerHTML = (alvo.dataset.leg || '') + '<small>Acervo público do Wikimedia Commons</small>';
-  lightbox.showModal();
+  const comIndice = e.target.closest('[data-idx]');
+  if(comIndice) return abrirVisor(+comIndice.dataset.idx);
+  const avulsa = e.target.closest('[data-foto]');
+  if(avulsa) abrirAvulsa(avulsa.dataset.foto, avulsa.dataset.leg || '');
 });
+document.addEventListener('keydown', e => {
+  if((e.key === 'Enter' || e.key === ' ') && e.target.dataset && e.target.dataset.idx){
+    e.preventDefault();
+    abrirVisor(+e.target.dataset.idx);
+  }
+});
+
+$('#lb-ant').onclick = () => passar(-1);
+$('#lb-prox').onclick = () => passar(1);
 $('#lb-x').onclick = () => lightbox.close();
 lightbox.addEventListener('click', e => { if(e.target === lightbox) lightbox.close(); });
+addEventListener('keydown', e => {
+  if(!lightbox.open) return;
+  if(e.key === 'ArrowLeft') passar(-1);
+  if(e.key === 'ArrowRight') passar(1);
+});
+
+/* arraste no celular */
+let toqueX = null, toqueY = null;
+const areaFoto = $('.lb-foto');
+areaFoto.addEventListener('touchstart', e => {
+  toqueX = e.changedTouches[0].clientX;
+  toqueY = e.changedTouches[0].clientY;
+}, {passive:true});
+areaFoto.addEventListener('touchend', e => {
+  if(toqueX === null) return;
+  const dx = e.changedTouches[0].clientX - toqueX;
+  const dy = e.changedTouches[0].clientY - toqueY;
+  toqueX = null;
+  if(Math.abs(dx) > 45 && Math.abs(dx) > Math.abs(dy)) passar(dx < 0 ? 1 : -1);
+}, {passive:true});
 
 /* ------------------------------------------------- linha do tempo 3D */
 const tl = $('#timeline');
@@ -4989,6 +5148,7 @@ btVerMais.onclick = () => {
 };
 
 /* --------------------------------------------------------- citacoes */
+const FOTOS = [{"s":"https://upload.wikimedia.org/wikipedia/commons/0/0e/Sewing_lesson_in_a_girl_class_in_Hellemmes_around_1900.jpg","a":1827,"t":"Direito à instrução primária","l":"Aula em uma classe de meninas, registro de cerca de 1900","i":"A cena mostra o que a lei de 1827 realmente entregou: meninas reunidas para aprender costura, e não as disciplinas oferecidas aos meninos. A imagem ajuda a entender que o acesso à escola veio antes da igualdade de conteúdo, e que a disputa seguinte foi pelo direito de estudar as mesmas matérias."},{"s":"https://upload.wikimedia.org/wikipedia/commons/4/43/Woman%27s_Rights_Convention.jpg","a":1848,"t":"Convenção de Seneca Falls","l":"Registro da primeira convenção pelos direitos das mulheres, Estados Unidos","i":"É o registro do encontro que deu início ao movimento organizado pelos direitos das mulheres no mundo ocidental. O documento que saiu dali, a Declaração de Sentimentos, virou modelo para campanhas em outros países e colocou o voto feminino como reivindicação pública pela primeira vez."},{"s":"https://thumb.wikimedia.org/wikipedia/commons/thumb/5/51/Group_of_mainly_female_shirtwaist_workers_on_strike%2C_in_a_room%2C_New_York.png/960px-Group_of_mainly_female_shirtwaist_workers_on_strike%2C_in_a_room%2C_New_York.png","a":1857,"t":"Greve das operárias têxteis","l":"Operárias em greve nas fábricas de camisas de Nova York","i":"A fotografia mostra que a luta das mulheres também nasceu no chão de fábrica, e não apenas nos salões e nas tribunas. Greves como essa, por jornada menor e salário digno, são uma das raízes históricas do 8 de Março e ligam a pauta de gênero à pauta do trabalho."},{"s":"https://upload.wikimedia.org/wikipedia/commons/e/ec/Ritalobato.jpg","a":1887,"t":"A primeira médica do Brasil","l":"Rita Lobato Velho Lopes, primeira mulher a se formar em medicina no Brasil","i":"O retrato documenta a primeira mulher diplomada em medicina no Brasil, oito anos depois de as faculdades serem abertas a elas. A imagem prova que a exclusão das mulheres das profissões de prestígio era uma barreira legal e social, não uma questão de capacidade."},{"s":"https://thumb.wikimedia.org/wikipedia/commons/thumb/6/6f/1893_New_Zealand_suffrage_petition.jpg/960px-1893_New_Zealand_suffrage_petition.jpg","a":1893,"t":"Primeiro país com voto feminino","l":"Petição pelo sufrágio feminino na Nova Zelândia, 1893","i":"O rolo de papel com quase 32 mil assinaturas é a prova material de que o sufrágio feminino teve apoio popular massivo, e não foi concessão de governantes. A petição está inscrita no registro Memória do Mundo da Unesco e é um dos documentos mais importantes da história da democracia."},{"s":"https://upload.wikimedia.org/wikipedia/commons/8/89/Clara_Zetkin_1930.jpg","a":1910,"t":"Nasce o 8 de Março","l":"Clara Zetkin, idealizadora do Dia Internacional da Mulher","i":"O retrato mostra a mulher cuja proposta transformou reivindicações locais em uma data global. A decisão tomada em Copenhague criou o calendário que até hoje leva milhões de pessoas às ruas todo 8 de Março, incluindo os atos que aparecem nesta galeria."},{"s":"https://thumb.wikimedia.org/wikipedia/commons/thumb/1/15/Suffrage_worker_with_newspaper_clippings_on_the_passage_of_the_Nineteenth_Amendment_granting_women_the_right_to_vote_by_the_United_States_Senate.jpg/960px-Suffrage_worker_with_newspaper_clippings_on_the_passage_of_the_Nineteenth_Amendment_granting_women_the_right_to_vote_by_the_United_States_Senate.jpg","a":1918,"t":"Voto feminino no Reino Unido","l":"Ativista sufragista com recortes de jornal sobre a conquista do voto","i":"A imagem mostra a imprensa como campo de batalha do sufragismo: recortes de jornal eram colecionados como prova de avanço da causa. A conquista britânica de 1918 foi parcial, limitada por idade e propriedade, e escancara como direitos costumam chegar em etapas."},{"s":"https://thumb.wikimedia.org/wikipedia/commons/thumb/1/15/Suffrage_worker_with_newspaper_clippings_on_the_passage_of_the_Nineteenth_Amendment_granting_women_the_right_to_vote_by_the_United_States_Senate.jpg/960px-Suffrage_worker_with_newspaper_clippings_on_the_passage_of_the_Nineteenth_Amendment_granting_women_the_right_to_vote_by_the_United_States_Senate.jpg","a":1920,"t":"A 19ª Emenda nos Estados Unidos","l":"Sufragista celebra a aprovação da 19ª Emenda no Senado dos Estados Unidos","i":"O registro celebra a aprovação da emenda que proibiu negar o voto em razão do sexo nos Estados Unidos. O contraponto necessário é que mulheres negras continuaram impedidas de votar em vários estados por décadas, lembrando que uma lei igual no papel não produz acesso igual."},{"s":"https://upload.wikimedia.org/wikipedia/commons/6/66/Celina_Guimar%C3%A3es_Viana.jpg","a":1928,"t":"A primeira eleitora e a primeira prefeita","l":"Celina Guimarães Viana, primeira eleitora registrada do Brasil","i":"O retrato documenta a primeira eleitora registrada do país, quatro anos antes de a legislação federal permitir o voto feminino. A imagem mostra que a conquista começou no interior do Rio Grande do Norte, e não nos grandes centros, por iniciativa local."},{"s":"https://thumb.wikimedia.org/wikipedia/commons/thumb/2/28/Bertha_Lutz_1925.jpg/960px-Bertha_Lutz_1925.jpg","a":1932,"t":"Voto feminino no Brasil","l":"Bertha Lutz, líder do movimento sufragista brasileiro","i":"O retrato apresenta o rosto da articulação que levou ao Código Eleitoral de 1932. A imagem lembra que o voto feminino no Brasil foi resultado de uma década de organização coletiva, com congressos, imprensa própria e pressão direta sobre o governo."},{"s":"https://upload.wikimedia.org/wikipedia/commons/9/95/Carlota_Pereira_de_Queiroz_1920%27s.jpg","a":1934,"t":"A primeira deputada federal","l":"Carlota Pereira de Queirós, primeira deputada federal do Brasil","i":"A fotografia documenta a única mulher entre 254 constituintes de 1934. Serve como medida visual da desigualdade de representação: a presença feminina no Legislativo brasileiro começou como exceção e avançou lentamente, tema que reaparece na foto da bancada feminina de 2023."},{"s":"https://thumb.wikimedia.org/wikipedia/commons/thumb/1/12/Weavers_at_work_LOC_2163450764.jpg/960px-Weavers_at_work_LOC_2163450764.jpg","a":1943,"t":"A CLT e o trabalho feminino","l":"Tecelãs em jornada de trabalho na indústria têxtil","i":"As tecelãs em jornada mostram que o trabalho feminino já sustentava a indústria muito antes de a lei reconhecer direitos. A CLT chegou para regular uma realidade existente, e a proibição de salário desigual que ela trouxe levaria oitenta anos até ganhar mecanismos de fiscalização."},{"s":"https://thumb.wikimedia.org/wikipedia/commons/thumb/3/32/Bertha_Lutz_07.jpg/960px-Bertha_Lutz_07.jpg","a":1945,"t":"A Carta da ONU e a assinatura brasileira","l":"Bertha Lutz, delegada do Brasil na conferência de fundação da ONU","i":"A imagem registra a delegada brasileira que assinou a Carta da ONU e trabalhou para que a igualdade entre homens e mulheres entrasse no texto. Esse parágrafo abriu caminho para a CEDAW e para todo o sistema internacional de proteção que o Brasil usa até hoje."},{"s":"https://upload.wikimedia.org/wikipedia/commons/c/c9/Simone_de_Beauvoir_1967_%28cropped%29.jpg","a":1949,"t":"O Segundo Sexo","l":"Simone de Beauvoir, autora de O Segundo Sexo","i":"O retrato acompanha a publicação da obra que separou biologia de destino social. A tese de que a condição feminina é construída reorganizou o debate acadêmico e político e virou base teórica de movimentos em todo o mundo, inclusive no Brasil."},{"s":"https://thumb.wikimedia.org/wikipedia/commons/thumb/1/12/International_Labor_Conference_1929_Japan.jpg/960px-International_Labor_Conference_1929_Japan.jpg","a":1951,"t":"Salário igual para trabalho de igual valor","l":"Conferência Internacional do Trabalho, registro histórico da OIT","i":"A imagem de uma conferência internacional do trabalho representa o foro onde se firmou o princípio de salário igual para trabalho de igual valor. Esse princípio atravessou sete décadas e chegou à legislação brasileira de transparência salarial aprovada em 2023."},{"s":"https://thumb.wikimedia.org/wikipedia/commons/thumb/b/be/A_Young_Woman_%28Heiress%29_Prepares_to_Sign_a_Document_Met_DP885282.jpg/960px-A_Young_Woman_%28Heiress%29_Prepares_to_Sign_a_Document_Met_DP885282.jpg","a":1962,"t":"Estatuto da Mulher Casada","l":"Mulher assina um documento, imagem de acervo histórico","i":"A cena de uma mulher assinando um documento resume o que estava em jogo no Estatuto da Mulher Casada: capacidade civil plena. Antes disso, assinar contrato, abrir conta ou aceitar emprego dependia da autorização do marido."},{"s":"https://upload.wikimedia.org/wikipedia/commons/7/73/Stamp_of_Brazil_-_1975_-_Colnect_152238_-_International_Women_s_Year.jpeg","a":1975,"t":"Ano Internacional da Mulher","l":"Selo brasileiro comemorativo do Ano Internacional da Mulher, 1975","i":"O selo mostra o Estado brasileiro reconhecendo oficialmente a pauta em plena ditadura militar. Peças como essa circulavam em milhões de cartas e davam visibilidade a um tema que os movimentos organizavam sob vigilância e censura."},{"s":"https://upload.wikimedia.org/wikipedia/commons/4/4a/Portrait_of_male_and_female_wedding_guests_%28AM_80503-1%29.jpg","a":1977,"t":"Lei do Divórcio","l":"Retrato de casamento em registro histórico","i":"O retrato de casamento lembra o regime jurídico que vigorava antes de 1977: uma união que a lei não permitia desfazer. Sem divórcio, mulheres ficavam presas a relações desfeitas ou violentas, sem direito a constituir nova família legalmente."},{"s":"https://thumb.wikimedia.org/wikipedia/commons/thumb/b/b7/The_United_Nations_Secretariat_Building.jpg/960px-The_United_Nations_Secretariat_Building.jpg","a":1979,"t":"CEDAW nas Nações Unidas","l":"Sede da Organização das Nações Unidas, em Nova York","i":"A sede das Nações Unidas representa o lugar onde a CEDAW foi aprovada e virou parâmetro jurídico internacional. É o tratado que o Brasil ratificou em 1984 e que embasa boa parte da legislação nacional de igualdade em vigor."},{"s":"https://thumb.wikimedia.org/wikipedia/commons/thumb/5/54/Delegacia_da_Mulher_em_Campinas.jpg/960px-Delegacia_da_Mulher_em_Campinas.jpg","a":1985,"t":"A primeira Delegacia da Mulher","l":"Delegacia de Defesa da Mulher, modelo criado no Brasil","i":"A fachada de uma delegacia especializada mostra a criação de uma porta de entrada pensada para a mulher em situação de violência. O modelo nasceu no Brasil, foi copiado por vários países da América Latina e é o antecedente direto da DPCAMI de Florianópolis."},{"s":"https://thumb.wikimedia.org/wikipedia/commons/thumb/4/47/Promulga%C3%A7%C3%A3o-Constitui%C3%A7%C3%A3o-1988.jpg/960px-Promulga%C3%A7%C3%A3o-Constitui%C3%A7%C3%A3o-1988.jpg","a":1988,"t":"Constituição Cidadã","l":"Promulgação da Constituição Federal de 1988","i":"O registro da promulgação documenta o momento em que a igualdade entre homens e mulheres entrou no artigo 5º da Constituição. Esse dispositivo é o alicerce jurídico de todas as leis de proteção que vieram depois, da Maria da Penha à igualdade salarial."},{"s":"https://thumb.wikimedia.org/wikipedia/commons/thumb/b/b4/Organization_of_American_States_Building%2C_Washington%2C_D.C..jpg/960px-Organization_of_American_States_Building%2C_Washington%2C_D.C..jpg","a":1994,"t":"Convenção de Belém do Pará","l":"Sede da Organização dos Estados Americanos, em Washington","i":"A sede da Organização dos Estados Americanos marca onde foi aprovada a primeira convenção internacional dedicada à violência contra a mulher. Foi esse tratado que fundamentou a condenação do Brasil no caso Maria da Penha e empurrou o país a criar a lei de 2006."},{"s":"https://thumb.wikimedia.org/wikipedia/commons/thumb/4/44/Hillary_Rodham_Clinton_Addresses_the_Fourth_United_Nations_Conference_on_Women_at_the_Beijing_International_Conference_Center_in_Bejiing%2C_China_-_DPLA_-_f930a22fe8ca15312130e94f4f201f45.jpg/960px-thumbnail.jpg","a":1995,"t":"Pequim e as cotas eleitorais","l":"IV Conferência Mundial sobre a Mulher, Pequim, 1995","i":"O registro da conferência de Pequim mostra o encontro que firmou que direitos das mulheres são direitos humanos. A Plataforma de Ação aprovada ali ainda orienta políticas públicas, e no mesmo ano o Brasil criou a cota mínima de candidaturas femininas."},{"s":"https://thumb.wikimedia.org/wikipedia/commons/thumb/7/73/Plen%C3%A1rio_do_Congresso_%2817181389140%29.jpg/960px-Plen%C3%A1rio_do_Congresso_%2817181389140%29.jpg","a":2002,"t":"Novo Código Civil","l":"Plenário do Congresso Nacional, em Brasília","i":"O plenário do Congresso representa a votação que encerrou a figura do homem como chefe da sociedade conjugal. Com o novo Código Civil, o pátrio poder deu lugar ao poder familiar, exercido igualmente pelos dois pais."},{"s":"https://thumb.wikimedia.org/wikipedia/commons/thumb/c/cd/Maria_da_Penha_em_novembro_de_2018_%28cropped_2%29.jpg/960px-Maria_da_Penha_em_novembro_de_2018_%28cropped_2%29.jpg","a":2006,"t":"Lei Maria da Penha","l":"Maria da Penha Maia Fernandes, que deu nome à lei","i":"O retrato mostra a mulher cuja história deu nome à lei mais conhecida do país sobre violência doméstica. A imagem lembra que a legislação não nasceu de um debate abstrato, e sim de quase vinte anos de impunidade em um caso concreto, levado a uma corte internacional."},{"s":"https://thumb.wikimedia.org/wikipedia/commons/thumb/2/20/Manifesta%C3%A7%C3%A3o-contra-feminic%C3%ADdio-5.jpg/960px-Manifesta%C3%A7%C3%A3o-contra-feminic%C3%ADdio-5.jpg","a":2013,"t":"Atendimento integral no SUS","l":"Ato público pelo fim da violência contra a mulher","i":"O ato público representa a pressão social que resultou na obrigação de atendimento integral e imediato às vítimas de violência sexual na rede pública. A lei garantiu que o socorro médico não dependesse de boletim de ocorrência nem de autorização judicial."},{"s":"https://thumb.wikimedia.org/wikipedia/commons/thumb/4/48/Manifesta%C3%A7%C3%A3o-contra-feminic%C3%ADdio-4.jpg/960px-Manifesta%C3%A7%C3%A3o-contra-feminic%C3%ADdio-4.jpg","a":2015,"t":"Lei do Feminicídio","l":"Manifestação contra o feminicídio no Brasil","i":"A manifestação mostra o movimento que levou o Congresso a nomear o assassinato de mulheres por razões de gênero. Dar nome ao crime permitiu medir o problema em estatísticas oficiais e tratar o feminicídio de forma distinta de outros homicídios."},{"s":"https://thumb.wikimedia.org/wikipedia/commons/thumb/e/e9/Dia-da-mulher-manifestacao-na-praca-da-se-sao-paulo_%2832946536110%29.jpg/960px-Dia-da-mulher-manifestacao-na-praca-da-se-sao-paulo_%2832946536110%29.jpg","a":2018,"t":"Importunação sexual é crime","l":"Ato do 8 de Março na Praça da Sé, São Paulo","i":"O ato do 8 de Março na Praça da Sé registra a escala das mobilizações que empurraram mudanças na lei penal. Foi nesse contexto que a importunação sexual, antes tratada como simples contravenção, passou a ser crime no Brasil."},{"s":"https://thumb.wikimedia.org/wikipedia/commons/thumb/0/05/DEAM_%285641876582%29.jpg/960px-DEAM_%285641876582%29.jpg","a":2019,"t":"Medida protetiva na delegacia","l":"Atendimento em delegacia especializada de defesa da mulher","i":"O atendimento em delegacia especializada ilustra a mudança que permitiu ao delegado conceder medida protetiva em situação de risco atual. O encurtamento do caminho entre o pedido e a proteção pode representar a diferença entre a vida e a morte."},{"s":"https://thumb.wikimedia.org/wikipedia/commons/thumb/0/06/Manifesta%C3%A7%C3%A3o-contra-feminic%C3%ADdio-2.jpg/960px-Manifesta%C3%A7%C3%A3o-contra-feminic%C3%ADdio-2.jpg","a":2021,"t":"Perseguição vira crime","l":"Mobilização pelo fim da violência contra a mulher","i":"A mobilização pelo fim da violência contra a mulher acompanha a criminalização da perseguição, o chamado stalking. A lei alcançou também a perseguição digital, por mensagens e redes sociais, forma de violência que cresceu com os celulares."},{"s":"https://thumb.wikimedia.org/wikipedia/commons/thumb/c/c1/2023-02-01_Bancada_Feminina.jpg/960px-2023-02-01_Bancada_Feminina.jpg","a":2021,"t":"Violência política de gênero","l":"Bancada feminina do Congresso Nacional","i":"A fotografia da bancada feminina do Congresso mostra ao mesmo tempo um avanço e um limite: mulheres são maioria da população e minoria no Legislativo. Foi essa bancada que articulou a lei contra a violência política de gênero, que protege candidatas e eleitas."},{"s":"https://thumb.wikimedia.org/wikipedia/commons/thumb/2/28/Janice_Glenn_Acting_Director_of_Illinois_Department_of_Human_Rights_Equal_Pay_Day_Rally_and_Press_Conference_Chicago_Illinois_4-10-18_0703_%2840688403994%29.jpg/960px-Janice_Glenn_Acting_Director_of_Illinois_Department_of_Human_Rights_Equal_Pay_Day_Rally_and_Press_Conference_Chicago_Illinois_4-10-18_0703_%2840688403994%29.jpg","a":2023,"t":"Lei da Igualdade Salarial","l":"Ato público pela igualdade salarial entre mulheres e homens","i":"O ato pela igualdade salarial representa uma reivindicação que atravessa oitenta anos de legislação brasileira. A lei de 2023 saiu do princípio e foi para a prática ao obrigar empresas a publicar relatórios de transparência e a apresentar plano de ação em caso de diferença injustificada."},{"s":"https://thumb.wikimedia.org/wikipedia/commons/thumb/2/20/Manifesta%C3%A7%C3%A3o-contra-feminic%C3%ADdio-5.jpg/960px-Manifesta%C3%A7%C3%A3o-contra-feminic%C3%ADdio-5.jpg","a":2024,"t":"Feminicídio como crime autônomo","l":"Manifestação pelo fim do feminicídio","i":"A manifestação pelo fim do feminicídio acompanha a mudança penal mais dura já feita no Brasil sobre o tema. Ao deixar de ser qualificadora e virar crime autônomo, com pena de 20 a 40 anos, o assassinato de mulheres passou a ter tratamento jurídico próprio."}];
 const FRASES = [{"f":"Ninguém nasce mulher: torna-se mulher.","a":"Simone de Beauvoir","img":"https://upload.wikimedia.org/wikipedia/commons/3/39/Simone_de_Beauvoir_1955.jpg"},{"f":"Nenhuma mulher deveria dizer: sou apenas uma mulher.","a":"Nísia Floresta","img":"https://thumb.wikimedia.org/wikipedia/commons/thumb/e/e5/Retrao_de_N%C3%ADsia_Floresta.jpg/500px-Retrao_de_N%C3%ADsia_Floresta.jpg"},{"f":"Uma criança, um professor, um livro e uma caneta podem mudar o mundo.","a":"Malala Yousafzai","img":"https://thumb.wikimedia.org/wikipedia/commons/thumb/f/fe/Malala_Yousafzai_2015.jpg/500px-Malala_Yousafzai_2015.jpg"},{"f":"Não pense que seu voto sozinho não importa muito. A chuva que refresca a terra seca é feita de gotas isoladas.","a":"Kate Sheppard","img":"https://thumb.wikimedia.org/wikipedia/commons/thumb/6/60/Kate_Sheppard.jpg/500px-Kate_Sheppard.jpg"},{"f":"Eu não sou livre enquanto qualquer mulher não for livre, mesmo que os grilhões dela sejam diferentes dos meus.","a":"Audre Lorde","img":"https://thumb.wikimedia.org/wikipedia/commons/thumb/c/c2/Audre_Lorde.jpg/500px-Audre_Lorde.jpg"},{"f":"A nossa escrevivência não pode ser lida como histórias para ninar os da casa grande, e sim para incomodá-los em seus sonos injustos.","a":"Conceição Evaristo","img":"https://thumb.wikimedia.org/wikipedia/commons/thumb/4/42/ConceicaoEvaristo_%28cropped%29.jpg/500px-ConceicaoEvaristo_%28cropped%29.jpg"}];
 const elFrase = $('#frase'), elAutora = $('#autora'), elRetrato = $('#retrato'), pontos = $('#pontos');
 let iFrase = 0, timerFrase;
@@ -5097,10 +5257,13 @@ document.addEventListener('click', async e => {
 });
 
 /* ------------------------------------------ verificacao rapida no console */
-console.assert($('#pista .slide').length === 280, 'devem existir 280 perguntas no total');
+console.assert($$('#pista .slide').length === 280, 'devem existir 280 perguntas no total');
 console.assert(visiveis().length === POR_QUIZ, 'cada quiz deve mostrar ' + POR_QUIZ + ' perguntas');
-console.assert($('a[href^="tel:"]').length >= 12, 'todos os telefones devem ser links de ligacao');
-console.assert($('a[href*="google.com/maps"]').length >= 8, 'todos os enderecos devem abrir no mapa');
+console.assert(FOTOS.length === 33 && FOTOS.every(f => f.i && f.i.length > 80),
+  'toda foto precisa de um texto de impacto');
+console.assert($$('[data-idx]').length >= 33 * 2, 'galeria e linha do tempo abrem o visor');
+console.assert($$('a[href^="tel:"]').length >= 12, 'todos os telefones devem ser links de ligacao');
+console.assert($$('a[href*="google.com/maps"]').length >= 8, 'todos os enderecos devem abrir no mapa');
 console.assert(document.querySelectorAll('.galeria figure:not(.extra)').length === 6, 'a galeria deve comecar com 6 imagens');
 console.assert($$('#timeline .item').length === 33, 'linha do tempo deve ter 33 marcos');
 console.assert(!document.body.innerText.includes('\u2014'), 'o texto nao deve conter travessao');
